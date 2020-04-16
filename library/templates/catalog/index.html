@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}Katalog{% endblock %}
+
+{% block content %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="container">
+        <main role="main" class="pb-3">
+            <h1>Katalog</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <p align="right">
+                        <input type="button" value="Resetuj filtry" onClick="clearFilters()"
+                               class="btn btn-outline-warning" form="filters"/>
+                        <input type="submit" id="applyFiltersButton" value="Zastosuj filtry" class="btn btn-info"
+                               form="filters"/>
+                    </p>
+                </div>
+            </div>
+            <form action="/" id="filters" method="get">
+                <table id="Titles" class="table table-bordered sortable">
+                    <thead>
+                    <tr>
+                        <th class="sorter-textPL">Autor</th>
+                        <th class="sorter-textPL">Tytuł</th>
+                        <th class="sorter-simpleNumber">Rok wydania</th>
+                    </tr>
+                    </thead>
+                    <tbody class="tablesorter-no-sort">
+                    <tr>
+                        <td style="background-color: #99bfe6; vertical-align: middle">
+                            <input type="text" id="authorFilter" name="author" value="{{ author }}">
+                        </td>
+                        <td style="background-color: #99bfe6; vertical-align: middle">
+                            <input type="text" id="titleFilter" name="title" value="{{ title }}">
+                        </td>
+                        <td style="background-color: #99bfe6">
+                            od: <input type="number" step="1" min="1950" max='2020' id="yearFromFilter" name="year_from"
+                                       value="{{ yearFrom }}">
+                            do: <input type="number" step="1" min="1950" max='2020' id="yearToFilter" name="year_to"
+                                       value="{{ yearTo }}">
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody>
+                    {% for t in titles %}
+                        <tr onclick="location.href = '/'">
+                            <td>{{ t.author }}</td>
+                            <td>{{ t.title }}</td>
+                            <td>{{ t.publicationYear }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </main>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <!--suppress JSUnusedLocalSymbols -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.tablesorter.addParser({
+                id: 'textPL',
+                is: function (s, table, cell, $cell) {
+                    return false;
+                },
+                format: function (s, table, cell, $cell) {
+                    return s.toLowerCase().replace('ą', 'a').replace('ć', 'c').replace('ę', 'e').replace('ł', 'l').replace('ó', 'o').replace('ś', 's').replace('ż', 'z').replace('ź', 'z');
+                },
+                type: 'text'
+            });
+            $.tablesorter.addParser({
+                id: 'simpleNumber',
+                is: function (s, table, cell, $cell) {
+                    return false;
+                },
+                format: function (s, table, cell, $cell) {
+                    return s.replace('-', '');
+                },
+                type: 'text'
+            });
+            $("#Titles").tablesorter({
+                theme: 'blue',
+                widgets: ['zebra']
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function clearFilters() {
+            document.getElementById("authorFilter").value = null;
+            document.getElementById("titleFilter").value = null;
+            document.getElementById("yearFromFilter").value = null;
+            document.getElementById("yearToFilter").value = null;
+        }
+    </script>
+{% endblock %}

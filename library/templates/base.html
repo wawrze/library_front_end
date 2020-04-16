@@ -1,0 +1,60 @@
+{% load static %}
+<!doctype html>
+<title>{% block title %}{% endblock %} - Biblioteka</title>
+<link rel="stylesheet" href="{% static 'site.css' %}">
+<link rel="stylesheet" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'tablesorter/themes/theme.blue.css' %}">
+<body>
+<header>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" href="/">Biblioteka</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse col-sm-7">
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="">Katalog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="">Użytkownicy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="">Książki</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" href="">Wypożyczenia</a>
+                    </li>
+                </ul>
+            </div>
+            {% if not user is None %}
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse col-sm-2">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="">Witaj, {{ user.username }}!</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href=""><input class="btn btn-outline-primary" type="button" value="Wyloguj"/></a>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+{% block content %}{% endblock %}
+<br><br><br>
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2020 - Biblioteka by Mateusz Wawreszuk
+    </div>
+</footer>
+<script src="{% static "jquery/dist/jquery.min.js" %}"></script>
+<script src="{% static "bootstrap/dist/js/bootstrap.bundle.min.js" %}"></script>
+<script src="{% static "site.js" %}"></script>
+<script src="{% static "tablesorter/jquery.tablesorter.min.js" %}"></script>
+{% block scripts %}{% endblock %}
+</body>
