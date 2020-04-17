@@ -1,5 +1,4 @@
 import requests
-from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.template import loader
 
@@ -38,8 +37,11 @@ def index(request):
         filtered_titles = list(filter(lambda t: t['publicationYear'] <= int(year_to), titles))
         titles = filtered_titles
 
-    user = User()
-    user.username = 'Ktoś'
+    try:
+        user = request.session['user']
+    except KeyError:
+        user = None
+
     template = loader.get_template('catalog/index.html')
     context = {
         'titles': titles,
