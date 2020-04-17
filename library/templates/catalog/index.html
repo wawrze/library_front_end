@@ -16,7 +16,7 @@
                     </p>
                 </div>
             </div>
-            <form action="/" id="filters" method="get">
+            <form id="filters" method="get">
                 <table id="Titles" class="table table-bordered sortable">
                     <thead>
                     <tr>
@@ -43,7 +43,7 @@
                     </tbody>
                     <tbody>
                     {% for t in titles %}
-                        <tr onclick="location.href = '/'">
+                        <tr onclick="location.href = 'catalog/{{ t.id }}/books'">
                             <td>{{ t.author }}</td>
                             <td>{{ t.title }}</td>
                             <td>{{ t.publicationYear }}</td>

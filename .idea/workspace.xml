@@ -2,11 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7f315924-8423-4b3f-ac80-8827cc5e29d4" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/library/templates/catalog/books.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/asgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/asgi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/templates/user/changePassword.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/user/userDetails.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/templates/catalog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/catalog/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/views/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/views/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/views/catalog.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/views/catalog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/wsgi.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -28,7 +32,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/library/templates/user" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/library/templates/catalog" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -38,6 +42,7 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Wawra\Documents\STUDIA INFORMATYKA PB\Semestr 6\Programowanie Hybrydowe\PS\projekt\frontend\Library\library\templates\catalog" />
       <recent name="C:\Users\Wawra\Documents\STUDIA INFORMATYKA PB\Semestr 6\Programowanie Hybrydowe\PS\projekt\frontend\Library\library\templates\user" />
     </key>
   </component>
@@ -91,7 +96,7 @@
       <updated>1587046674210</updated>
       <workItem from="1587046675377" duration="8876000" />
       <workItem from="1587062079799" duration="1289000" />
-      <workItem from="1587105416764" duration="9953000" />
+      <workItem from="1587105416764" duration="14689000" />
     </task>
     <servers />
   </component>

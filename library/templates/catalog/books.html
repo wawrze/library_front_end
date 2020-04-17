@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Dane pozycji{% endblock %}
+
+{% block content %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="container">
+        <main role="main" class="pb-3">
+            <h1>Dane pozycji</h1>
+            <hr>
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        Autor
+                    </dt>
+                    <dd class="col-sm-10">
+                        {{ title.author }}
+                    </dd>
+                    <dt class="col-sm-2">
+                        Tytuł
+                    </dt>
+                    <dd class="col-sm-10">
+                        {{ title.title }}
+                    </dd>
+                    <dt class="col-sm-2">
+                        Rok wydania
+                    </dt>
+                    <dd class="col-sm-10">
+                        {{ title.publicationYear }}
+                    </dd>
+                    <dt class="col-sm-2">
+                        Liczba książek
+                    </dt>
+                    <dd class="col-sm-10">
+                        {{ booksCount }}
+                    </dd>
+                </dl>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-8">
+                    <h3>Statusy książek</h3>
+                    <table id="Books" class="table table-bordered sortable">
+                        <thead>
+                        <tr>
+                            <th class="sorter-text">Status</th>
+                            <th class="sorter-text">Termin zwrotu</th>
+                            <th class="sorter-number">Do wypożyczania na</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for book in title.books %}
+                            <tr onclick="location.href = 'catalog/{{ t.id }}/books'">
+                                <td class="{% if book.status == 0 %}bg-success{% elif book.status == 1 %}bg-warning{% else %}bg-danger{% endif %}">
+                                    {% if book.status == 0 %}
+                                        Dostępna
+                                    {% elif book.status == 1 %}
+                                        Niedostępna
+                                    {% else %}
+                                        Wypożyczenie przeterminiowane
+                                    {% endif %}
+                                </td>
+                                <td>{{ book.rentTo }}</td>
+                                <td>{{ book.rentDays }} dni</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <!--suppress JSUnusedLocalSymbols -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Books").tablesorter({
+                theme: 'blue',
+                widgets: ['zebra']
+            });
+        });
+    </script>
+{% endblock %}
