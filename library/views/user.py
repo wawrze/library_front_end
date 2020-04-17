@@ -3,6 +3,8 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 
+from library.pwd_helper import hash_password
+
 
 def authorize(request):
     template = loader.get_template('user/login.html')
@@ -19,7 +21,7 @@ def authorize(request):
         elif password is None or password == '':
             error = 'Musisz podać hasło!'
         else:
-            body = {'login': username, 'password': password}
+            body = {'login': username, 'password': hash_password(password)}
             response = requests.post('http://127.0.0.1:8080/account/login', json=body)
             user = response.json()
             try:
@@ -40,7 +42,7 @@ def authorize(request):
                 username = ''
                 password = ''
             else:
-                user['password'] = password
+                user['password'] = hash_password(password)
                 token = 'Bearer ' + user['token']
                 user['token'] = token
                 request.session.clear()
@@ -77,7 +79,7 @@ def user_details(request):
 
         if old_password == '' or new_password_confirmation == '' or new_password == '':
             error_message = 'Musisz wypełnić wszystkie pola!'
-        elif user is None or old_password != user['password']:
+        elif user is None or hash_password(old_password) != user['password']:
             error_message = 'Nieprawidłowe hasło!'
         elif new_password != new_password_confirmation:
             error_message = 'Hasła się nie zgadzają!'
@@ -88,7 +90,7 @@ def user_details(request):
                 'id': user['id'],
                 'lastName': user['lastName'],
                 'login': user['login'],
-                'password': new_password,
+                'password': hash_password(new_password),
                 'token': '',
                 'userRole': user['userRole']
             }
@@ -98,7 +100,7 @@ def user_details(request):
                 json=body
             )
             if response.status_code == 200:
-                user['password'] = new_password
+                user['password'] = hash_password(new_password)
                 request.session['user'] = user
                 success_message = 'Hasło zostało zmienione.'
                 error_message = ''
