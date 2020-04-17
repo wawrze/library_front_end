@@ -2,6 +2,7 @@ from datetime import datetime
 
 import requests
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template import loader
 
 
@@ -100,5 +101,48 @@ def books(request, position_id):
         'title': title,
         'user': user,
         'booksCount': len(books_data)
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def new_catalog_position(request):
+    author = ''
+    title = ''
+    publication_year = ''
+    error = ''
+
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+        user = None
+
+    if request.method == 'POST':
+        author = request.POST['author']
+        title = request.POST['title']
+        publication_year = request.POST['publicationYear']
+
+        if author == '' or title == '' or publication_year == '':
+            error = "Musisz wypełnić wszystkie pola!"
+        else:
+            body = {'author': author, 'title': title, 'publicationYear': publication_year}
+            response = requests.post(
+                'http://127.0.0.1:8080/title/createTitle',
+                headers={'Authorization': token},
+                json=body
+            )
+            if response.status_code == 200:
+                return redirect('catalog')
+            else:
+                error = response.content
+
+    template = loader.get_template('catalog/new.html')
+    context = {
+        'error': error,
+        'title': title,
+        'user': user,
+        'author': author,
+        'publicationYear': publication_year
     }
     return HttpResponse(template.render(context, request))

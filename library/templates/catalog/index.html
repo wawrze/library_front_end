@@ -7,7 +7,14 @@
         <main role="main" class="pb-3">
             <h1>Katalog</h1>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
+                    <p>
+                        {% if user is not None and user.userRole == 'ADMIN' %}
+                            <a href="/catalog/new"><input class="btn btn-success" type="button" value="Dodaj pozycję"/></a>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-md-6">
                     <p align="right">
                         <input type="button" value="Resetuj filtry" onClick="clearFilters()"
                                class="btn btn-outline-warning" form="filters"/>
@@ -17,7 +24,7 @@
                 </div>
             </div>
             <form id="filters" method="get">
-                <table id="Titles" class="table table-bordered sortable">
+                <table id="titles" class="table table-bordered sortable">
                     <thead>
                     <tr>
                         <th class="sorter-textPL">Autor</th>
@@ -81,7 +88,7 @@
                 },
                 type: 'text'
             });
-            $("#Titles").tablesorter({
+            $("#titles").tablesorter({
                 theme: 'blue',
                 widgets: ['zebra']
             });
