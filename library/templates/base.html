@@ -34,10 +34,11 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse col-sm-2">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="">Witaj, {{ user.firstName }}!</a>
+                            <a class="nav-link text-dark" href="/user/changePassword">Witaj, {{ user.firstName }}!</a>
                         </li>
                         <li class="nav-item">
-                            <a href=""><input class="btn btn-outline-primary" type="button" value="Wyloguj"/></a>
+                            <a href="/user/logout"><input class="btn btn-outline-primary" type="button"
+                                                          value="Wyloguj"/></a>
                         </li>
                     </ul>
                 </div>
@@ -45,7 +46,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse col-sm-2">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a href="/login"><input class="btn btn-outline-primary" type="button" value="Zaloguj"/></a>
+                            <a href="/user/login"><input class="btn btn-outline-primary" type="button" value="Zaloguj"/></a>
                         </li>
                     </ul>
                 </div>
