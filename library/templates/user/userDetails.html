@@ -1,11 +1,42 @@
 {% extends 'base.html' %}
-{% block title %}Zmiana hasła{% endblock %}
+{% block title %}Dane użytkownika{% endblock %}
 
 {% block content %}
     <!--suppress HtmlFormInputWithoutLabel -->
     <div class="container">
         <main role="main" class="pb-3">
-            <h1>Zmiana hasła</h1>
+            <h1>Dane użytkownika</h1>
+            <hr>
+            <div>
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        Imię
+                    </dt>
+                    <dd class="col-sm-10">
+                        {{ user.firstName }}
+                    </dd>
+                    <dt class="col-sm-2">
+                        Nazwisko
+                    </dt>
+                    <dd class="col-sm-10">
+                        {{ user.lastName }}
+                    </dd>
+                    <dt class="col-sm-2">
+                        login
+                    </dt>
+                    <dd class="col-sm-10">
+                        {{ user.login }}
+                    </dd>
+                    <dt class="col-sm-2">
+                        Data założenia konta
+                    </dt>
+                    <dd class="col-sm-10">
+                        {{ user.accountCreationDate }}
+                    </dd>
+                </dl>
+            </div>
+            <hr>
+            <h3>Zmiana hasła</h3>
             <h5 class="error-message">{{ errorMessage }}</h5>
             <h5 class="success-message">{{ successMessage }}</h5>
             <div class="row">

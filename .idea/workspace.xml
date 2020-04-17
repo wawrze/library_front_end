@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7f315924-8423-4b3f-ac80-8827cc5e29d4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/library/templates/user/changePassword.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/templates/user/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/user/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/templates/user/changePassword.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/user/userDetails.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/library/views/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/views/user.py" afterDir="false" />
     </list>
@@ -93,7 +91,7 @@
       <updated>1587046674210</updated>
       <workItem from="1587046675377" duration="8876000" />
       <workItem from="1587062079799" duration="1289000" />
-      <workItem from="1587105416764" duration="9311000" />
+      <workItem from="1587105416764" duration="9953000" />
     </task>
     <servers />
   </component>

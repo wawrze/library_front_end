@@ -57,8 +57,8 @@ def authorize(request):
     return HttpResponse(template.render(context, request))
 
 
-def change_password(request):
-    template = loader.get_template('user/changePassword.html')
+def user_details(request):
+    template = loader.get_template('user/userDetails.html')
     error_message = ''
     success_message = ''
     old_password = ''
@@ -102,6 +102,9 @@ def change_password(request):
                 request.session['user'] = user
                 success_message = 'Hasło zostało zmienione.'
                 error_message = ''
+                old_password = ''
+                new_password = ''
+                new_password_confirmation = ''
             elif response.status_code == 500:
                 error_message = response.content
 
