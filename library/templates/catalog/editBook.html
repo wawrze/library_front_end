@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% block title %}Edycja książki{% endblock %}
+
+{% block content %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="container">
+        <main role="main" class="pb-3">
+            <h1>Edycja książki</h1>
+            <hr>
+            <h5 class="error-message">{{ error }}</h5>
+            <div class="row">
+                <div class="col-md-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="control-label">Autor</label>
+                            <input name="author" class="form-control" value="{{ book.title.author }}"
+                                   disabled="disabled"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Tytuł</label>
+                            <input name="title" class="form-control" value="{{ book.title.title }}"
+                                   disabled="disabled"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Rok wydania</label>
+                            <input name="publicationYear" class="form-control" value="{{ book.title.publicationYear }}"
+                                   disabled="disabled"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Status</label>
+                            <input name="status" class="form-control" value="{{ status }}" disabled="disabled"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Wypożyczona do</label>
+                            <input name="rentTo" class="form-control" value="{{ rentTo }}" disabled="disabled"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Maksymalna liczba dni jednorazowego wypożyczenia</label>
+                            <input name="rentDays" class="form-control" min="0" max="90" type="number"
+                                   value="{{ rentDays }}"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Zapisz zmiany" class="btn btn-primary"/>
+                        </div>
+                    </form>
+                    <form action="/catalog/{{ book.title.id }}/books/{{ book.id }}/delete" method="post">
+                        {% csrf_token %}
+                        <input
+                                class="btn btn-danger"
+                                role="button"
+                                type="submit"
+                                onclick="return confirm('Jesteś pewien?')"
+                                value="Usuń"
+                        >
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}{% endblock %}

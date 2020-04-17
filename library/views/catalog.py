@@ -92,7 +92,7 @@ def books(request, position_id):
             rent_to = '-'
         else:
             rent_to = book['rentTo']
-        book_data = {'status': status, 'rentTo': rent_to, 'rentDays': book['rentDays']}
+        book_data = {'id': book['id'], 'status': status, 'rentTo': rent_to, 'rentDays': book['rentDays']}
         books_data.append(book_data)
     title['books'] = books_data
 
@@ -135,7 +135,7 @@ def new_catalog_position(request):
             if response.status_code == 200:
                 return redirect('catalog')
             else:
-                error = response.content
+                error = 'Nieznany błąd: ' + response.content
 
     template = loader.get_template('catalog/new.html')
     context = {
@@ -146,3 +146,193 @@ def new_catalog_position(request):
         'publicationYear': publication_year
     }
     return HttpResponse(template.render(context, request))
+
+
+def edit_catalog_position(request, position_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+        user = None
+
+    response = requests.get(
+        'http://127.0.0.1:8080/title/getTitle?titleId=' + str(position_id),
+        headers={'Authorization': token}
+    )
+    position = response.json()
+    author = position['author']
+    title = position['title']
+    publication_year = position['publicationYear']
+    error = ''
+
+    if request.method == 'POST':
+        author = request.POST['author']
+        title = request.POST['title']
+        publication_year = request.POST['publicationYear']
+
+        if author == '' or title == '' or publication_year == '':
+            error = "Musisz wypełnić wszystkie pola!"
+        else:
+            body = {'id': position_id, 'author': author, 'title': title, 'publicationYear': publication_year}
+            response = requests.post(
+                'http://127.0.0.1:8080/title/updateTitle',
+                headers={'Authorization': token},
+                json=body
+            )
+            if response.status_code == 200:
+                return redirect('/catalog/' + str(position_id) + '/books')
+            else:
+                error = 'Nieznany błąd: ' + response.content
+
+    template = loader.get_template('catalog/edit.html')
+    context = {
+        'error': error,
+        'title': title,
+        'user': user,
+        'author': author,
+        'publicationYear': publication_year
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def new_book(request, position_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+        user = None
+
+    response = requests.get(
+        'http://127.0.0.1:8080/title/getTitle?titleId=' + str(position_id),
+        headers={'Authorization': token}
+    )
+    title = response.json()
+    rent_days = ''
+    error = ''
+
+    if request.method == 'POST':
+        rent_days = request.POST['rentDays']
+        if rent_days is None or rent_days == '':
+            error = 'Musisz podać liczbę dni!'
+        else:
+            body = {'rentDays': rent_days, 'title': title}
+            response = requests.post(
+                'http://127.0.0.1:8080/books/createBook',
+                headers={'Authorization': token},
+                json=body
+            )
+            if response.status_code == 200:
+                return redirect('/catalog/' + str(position_id) + '/books')
+            else:
+                error = 'Nieznany błąd: ' + response.content
+
+    template = loader.get_template('catalog/newBook.html')
+    context = {
+        'error': error,
+        'title': title,
+        'user': user,
+        'rentDays': rent_days
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def edit_book(request, position_id, book_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+        user = None
+
+    response = requests.get(
+        'http://127.0.0.1:8080/books/getBook?bookId=' + str(book_id),
+        headers={'Authorization': token}
+    )
+    book = response.json()
+    rent_days = book['rentDays']
+    try:
+        rent_to = datetime.strptime(book['rentTo'], '%Y-%m-%d')
+    except ValueError:
+        rent_to = None
+    except TypeError:
+        rent_to = None
+
+    if rent_to is None:
+        status = 'Dostępna'
+    elif rent_to.date() > datetime.now().date():
+        status = 'Niedostępna'
+    else:
+        status = 'Wypożyczenie przeterminowane'
+    if rent_to is None:
+        rent_to = '-'
+    else:
+        rent_to = book['rentTo']
+    error = ''
+
+    if request.method == 'POST':
+        rent_days = request.POST['rentDays']
+        if rent_days is None or rent_days == '':
+            error = 'Musisz podać liczbę dni!'
+        else:
+            body = book
+            body['rentDays'] = rent_days
+            response = requests.post(
+                'http://127.0.0.1:8080/books/updateBook',
+                headers={'Authorization': token},
+                json=body
+            )
+            if response.status_code == 200:
+                return redirect('/catalog/' + str(position_id) + '/books')
+            else:
+                error = 'Nieznany błąd: ' + response.content
+
+    template = loader.get_template('catalog/editBook.html')
+    context = {
+        'error': error,
+        'book': book,
+        'user': user,
+        'status': status,
+        'rentTo': rent_to,
+        'rentDays': rent_days
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def delete_catalog_position(request, position_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+        user = None
+
+    response = requests.delete(
+        'http://127.0.0.1:8080/title/deleteTitle?titleId=' + str(position_id),
+        headers={'Authorization': token}
+    )
+    if response.status_code == 200:
+        return redirect('/catalog')
+    else:
+        print(response.content)
+        return redirect('/catalog/' + str(position_id) + '/books')
+
+
+def delete_book(request, position_id, book_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+        user = None
+
+    response = requests.delete(
+        'http://127.0.0.1:8080/books/deleteBook?bookId=' + str(book_id),
+        headers={'Authorization': token}
+    )
+    if response.status_code == 200:
+        return redirect('/catalog/' + str(position_id) + '/books')
+    else:
+        print(response.content)
+        return redirect('/catalog/' + str(position_id) + '/books/' + str(book_id) + '/edit')

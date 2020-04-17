@@ -21,14 +21,14 @@
                     </li>
                     {% if user is not None and user.userRole != 'USER' %}
                         <li class="nav-item">
-                            <a class="nav-link text-dark" href="">Użytkownicy</a>
+                            <a class="nav-link text-dark" href="">Czytelnicy</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="">Wypożyczenia</a>
                         </li>
                         {% if user.userRole == 'ADMIN' %}
                             <li class="nav-item">
-                                <a class="nav-link text-dark" href="">Książki</a>
+                                <a class="nav-link text-dark" href="">Bibliotekarze</a>
                             </li>
                         {% endif %}
                     {% endif %}

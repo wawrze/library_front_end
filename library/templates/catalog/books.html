@@ -35,6 +35,32 @@
                     </dd>
                 </dl>
             </div>
+            {% if user is not None and user.userRole == 'ADMIN' %}
+                <hr>
+                <div>
+                    <a href="/catalog/{{ title.id }}/edit">
+                        <input class="btn btn-info" type="button" value="Edytuj"/>
+                    </a>
+                    <a href="/catalog/{{ title.id }}/books/new">
+                        <input class="btn btn-success" type="button" value="Dodaj książkę"/>
+                    </a>
+                </div>
+                {% if booksCount == 0 %}
+                    <br>
+                    <div>
+                    <form action="/catalog/{{ title.id }}/delete/" method="post">
+                        {% csrf_token %}
+                        <input
+                                class="btn btn-danger"
+                                role="button"
+                                type="submit"
+                                onclick="return confirm('Jesteś pewien?')"
+                                value="Usuń"
+                        >
+                    </form>
+                    <div>
+                {% endif %}
+            {% endif %}
             <hr>
             <div class="row">
                 <div class="col-8">
@@ -49,7 +75,11 @@
                         </thead>
                         <tbody>
                         {% for book in title.books %}
-                            <tr onclick="location.href = 'catalog/{{ t.id }}/books'">
+                            <tr
+                                    {% if user is not None and user.userRole == 'ADMIN' %}
+                                        onclick="location.href = '/catalog/{{ title.id }}/books/{{ book.id }}/edit'"
+                                    {% endif %}
+                            >
                                 <td class="{% if book.status == 0 %}bg-success{% elif book.status == 1 %}bg-warning{% else %}bg-danger{% endif %}">
                                     {% if book.status == 0 %}
                                         Dostępna

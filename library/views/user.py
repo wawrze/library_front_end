@@ -108,7 +108,7 @@ def user_details(request):
                 new_password = ''
                 new_password_confirmation = ''
             elif response.status_code == 500:
-                error_message = response.content
+                error_message = 'Nieznany błąd: ' + response.content
 
     context = {
         'errorMessage': error_message,

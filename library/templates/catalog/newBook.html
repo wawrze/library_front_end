@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}Nowa pozycja katalogu{% endblock %}
+{% block title %}Dodawanie książki{% endblock %}
 
 {% block content %}
     <!--suppress HtmlFormInputWithoutLabel -->
     <div class="container">
         <main role="main" class="pb-3">
-            <h1>Nowa pozycja katalogu</h1>
+            <h1>Dodawanie książki</h1>
             <hr>
             <h5 class="error-message">{{ error }}</h5>
             <div class="row">
@@ -14,19 +14,24 @@
                         {% csrf_token %}
                         <div class="form-group">
                             <label class="control-label">Autor</label>
-                            <input name="author" class="form-control" value="{{ author }}"/>
+                            <input name="author" class="form-control" value="{{ title.author }}" disabled="disabled"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Tytuł</label>
-                            <input name="title" class="form-control" value="{{ title }}"/>
+                            <input name="title" class="form-control" value="{{ title.title }}" disabled="disabled"/>
                         </div>
                         <div class="form-group">
                             <label class="control-label">Rok wydania</label>
-                            <input name="publicationYear" class="form-control" min="1900" max="2020" type="number"
-                                   value="{{ publicationYear }}"/>
+                            <input name="publicationYear" class="form-control" value="{{ title.publicationYear }}"
+                                   disabled="disabled"/>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Dodaj pozycję" class="btn btn-primary"/>
+                            <label class="control-label">Maksymalna liczba dni jednorazowego wypożyczenia</label>
+                            <input name="rentDays" class="form-control" min="0" max="90" type="number"
+                                   value="{{ rentDays }}"/>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Zapisz zmiany" class="btn btn-primary"/>
                         </div>
                     </form>
                 </div>

@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}Nowa pozycja katalogu{% endblock %}
+{% block title %}Edycja pozycja katalogu{% endblock %}
 
 {% block content %}
     <!--suppress HtmlFormInputWithoutLabel -->
     <div class="container">
         <main role="main" class="pb-3">
-            <h1>Nowa pozycja katalogu</h1>
+            <h1>Edycja pozycja katalogu</h1>
             <hr>
             <h5 class="error-message">{{ error }}</h5>
             <div class="row">
@@ -26,7 +26,7 @@
                                    value="{{ publicationYear }}"/>
                         </div>
                         <div class="form-group">
-                            <input type="submit" value="Dodaj pozycję" class="btn btn-primary"/>
+                            <input type="submit" value="Zapisz zmiany" class="btn btn-primary"/>
                         </div>
                     </form>
                 </div>
