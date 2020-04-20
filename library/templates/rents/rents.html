@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% block title %}Wypożyczenia{% endblock %}
+
+{% block content %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="container">
+        <main role="main" class="pb-3">
+            <h1>Wypożyczenia</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <p>
+                        {% if user is not None and user.userRole != 'USER' %}
+                            <a href="/rents/new"><input class="btn btn-success" type="button"
+                                                        value="Nowe wypożyczenie"/></a>
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p align="right">
+                        <input type="button" value="Resetuj filtry" onClick="clearFilters()"
+                               class="btn btn-outline-warning" form="filters"/>
+                        <input type="submit" id="applyFiltersButton" value="Zastosuj filtry" class="btn btn-info"
+                               form="filters"/>
+                    </p>
+                </div>
+            </div>
+            <form id="filters" method="post">
+                {% csrf_token %}
+                <table id="rents" class="table table-bordered sortable">
+                    <thead>
+                    <tr>
+                        <th class="sorter-textPL">Autor</th>
+                        <th class="sorter-textPL">Tytuł</th>
+                        <th class="sorter-textPL">Rok wydania</th>
+                        <th class="sorter-textPL">Konto czytelnika</th>
+                        <th class="sorter-textPL">Imię czytelnika</th>
+                        <th class="sorter-textPL">Nazwisko czytelnika</th>
+                        <th class="sorter-simpleNumber">Początek wypożyczenia</th>
+                        <th class="sorter-simpleNumber">Koniec wypożyczenia</th>
+                    </tr>
+                    </thead>
+                    <tbody class="tablesorter-no-sort">
+                    <tr>
+                        <td style="background-color: #99bfe6; vertical-align: middle">
+                            <input type="text" id="authorFilter" name="authorFilter" value="{{ filterAuthor }}">
+                        </td>
+                        <td style="background-color: #99bfe6; vertical-align: middle">
+                            <input type="text" id="titleFilter" name="titleFilter" value="{{ filterTitle }}">
+                        </td>
+                        <td style="background-color: #99bfe6">
+                            od: <input type="number" step="1" min="1950" max='2020' id="yearFromFilter"
+                                       name="yearFromFilter"
+                                       value="{{ filterYearFrom }}">
+                            <br>
+                            do: <input type="number" step="1" min="1950" max='2020' id="yearToFilter"
+                                       name="yearToFilter"
+                                       value="{{ filterYearTo }}">
+                        </td>
+                        <td style="background-color: #99bfe6; vertical-align: middle">
+                            <input type="text" id="loginFilter" name="loginFilter" value="{{ filterLogin }}">
+                        </td>
+                        <td style="background-color: #99bfe6; vertical-align: middle">
+                            <input type="text" id="firstNameFilter" name="firstNameFilter"
+                                   value="{{ filterFirstName }}">
+                        </td>
+                        <td style="background-color: #99bfe6; vertical-align: middle">
+                            <input type="text" id="lastNameFilter" name="lastNameFilter" value="{{ filterLastName }}">
+                        </td>
+                        <td style="background-color: #99bfe6">
+                            od: <input type="date" id="startDateFromFilter" name="startDateFromFilter"
+                                       value="{{ filterStartDateFrom }}">
+                            <br>
+                            do: <input type="date" id="startDateToFilter" name="startDateToFilter"
+                                       value="{{ filterStartDateTo }}">
+                        </td>
+                        <td style="background-color: #99bfe6">
+                            od: <input type="date" id="endDateFromFilter" name="endDateFromFilter"
+                                       value="{{ filterEndDateFrom }}">
+                            <br>
+                            do: <input type="date" id="endDateToFilter" name="endDateToFilter"
+                                       value="{{ filterEndDateTo }}">
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tbody>
+                    {% for rent in rents %}
+                        <tr onclick="location.href = 'rents/{{ rent.id }}/details'">
+                            <td>{{ rent.book.title.author }}</td>
+                            <td>{{ rent.book.title.title }}</td>
+                            <td>{{ rent.book.title.publicationYear }}</td>
+                            <td>{{ rent.user.login }}</td>
+                            <td>{{ rent.user.firstName }}</td>
+                            <td>{{ rent.user.lastName }}</td>
+                            <td>{{ rent.rentStartDate }}</td>
+                            <td class="{% if rent.status == 1 %}bg-danger{% endif %}">{{ rent.rentFinishDate }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </form>
+        </main>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <!--suppress JSUnusedLocalSymbols -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.tablesorter.addParser({
+                id: 'textPL',
+                is: function (s, table, cell, $cell) {
+                    return false;
+                },
+                format: function (s, table, cell, $cell) {
+                    return s.toLowerCase().replace('ą', 'a').replace('ć', 'c').replace('ę', 'e').replace('ł', 'l').replace('ó', 'o').replace('ś', 's').replace('ż', 'z').replace('ź', 'z');
+                },
+                type: 'text'
+            });
+            $.tablesorter.addParser({
+                id: 'simpleNumber',
+                is: function (s, table, cell, $cell) {
+                    return false;
+                },
+                format: function (s, table, cell, $cell) {
+                    return s.replace('-', '');
+                },
+                type: 'text'
+            });
+            $("#rents").tablesorter({
+                theme: 'blue',
+                widgets: ['zebra']
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function clearFilters() {
+            document.getElementById("authorFilter").value = null;
+            document.getElementById("titleFilter").value = null;
+            document.getElementById("yearFromFilter").value = null;
+            document.getElementById("yearToFilter").value = null;
+            document.getElementById("loginFilter").value = null;
+            document.getElementById("firstNameFilter").value = null;
+            document.getElementById("lastNameFilter").value = null;
+            document.getElementById("startDateFromFilter").value = null;
+            document.getElementById("startDateToFilter").value = null;
+            document.getElementById("endDateFromFilter").value = null;
+            document.getElementById("endDateToFilter").value = null;
+        }
+    </script>
+{% endblock %}

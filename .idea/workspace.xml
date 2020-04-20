@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7f315924-8423-4b3f-ac80-8827cc5e29d4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/library/templates/admins/admins.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/library/templates/admins/details.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/library/templates/admins/edit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/library/templates/admins/new.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/library/templates/rents/rents.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/library/views/rents.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +36,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/library/templates/admins" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/library/templates/rents" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
@@ -47,11 +48,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Wawra\Documents\STUDIA INFORMATYKA PB\Semestr 6\Programowanie Hybrydowe\PS\projekt\frontend\Library\library\templates\admins" />
+      <recent name="C:\Users\Wawra\Documents\STUDIA INFORMATYKA PB\Semestr 6\Programowanie Hybrydowe\PS\projekt\frontend\Library\library\templates\rents" />
       <recent name="C:\Users\Wawra\Documents\STUDIA INFORMATYKA PB\Semestr 6\Programowanie Hybrydowe\PS\projekt\frontend\Library\library\views" />
+      <recent name="C:\Users\Wawra\Documents\STUDIA INFORMATYKA PB\Semestr 6\Programowanie Hybrydowe\PS\projekt\frontend\Library\library\templates\admins" />
       <recent name="C:\Users\Wawra\Documents\STUDIA INFORMATYKA PB\Semestr 6\Programowanie Hybrydowe\PS\projekt\frontend\Library\library\templates\librarians" />
       <recent name="C:\Users\Wawra\Documents\STUDIA INFORMATYKA PB\Semestr 6\Programowanie Hybrydowe\PS\projekt\frontend\Library\library\templates\readers" />
-      <recent name="C:\Users\Wawra\Documents\STUDIA INFORMATYKA PB\Semestr 6\Programowanie Hybrydowe\PS\projekt\frontend\Library\library\templates\catalog" />
     </key>
   </component>
   <component name="RunManager">
@@ -95,7 +96,7 @@
       <workItem from="1587105416764" duration="26866000" />
       <workItem from="1587144790699" duration="5000" />
       <workItem from="1587372977723" duration="4536000" />
-      <workItem from="1587378721121" duration="7631000" />
+      <workItem from="1587378721121" duration="11509000" />
     </task>
     <servers />
   </component>
@@ -115,41 +116,77 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="2517" height="355" key="GridCell.Tab.0.bottom" timestamp="1587386175485">
+    <state width="2517" height="474" key="GridCell.Tab.0.bottom" timestamp="1587390484556">
       <screen x="0" y="0" width="2560" height="1379" />
     </state>
-    <state width="2517" height="355" key="GridCell.Tab.0.bottom/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587386175485" />
-    <state width="2517" height="355" key="GridCell.Tab.0.center" timestamp="1587386175485">
+    <state width="2517" height="474" key="GridCell.Tab.0.bottom/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587390484556" />
+    <state width="2517" height="474" key="GridCell.Tab.0.center" timestamp="1587390484556">
       <screen x="0" y="0" width="2560" height="1379" />
     </state>
-    <state width="2517" height="355" key="GridCell.Tab.0.center/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587386175485" />
-    <state width="2517" height="355" key="GridCell.Tab.0.left" timestamp="1587386175485">
+    <state width="2517" height="474" key="GridCell.Tab.0.center/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587390484556" />
+    <state width="2517" height="474" key="GridCell.Tab.0.left" timestamp="1587390484556">
       <screen x="0" y="0" width="2560" height="1379" />
     </state>
-    <state width="2517" height="355" key="GridCell.Tab.0.left/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587386175485" />
-    <state width="2517" height="355" key="GridCell.Tab.0.right" timestamp="1587386175485">
+    <state width="2517" height="474" key="GridCell.Tab.0.left/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587390484556" />
+    <state width="2517" height="474" key="GridCell.Tab.0.right" timestamp="1587390484556">
       <screen x="0" y="0" width="2560" height="1379" />
     </state>
-    <state width="2517" height="355" key="GridCell.Tab.0.right/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587386175485" />
-    <state width="2517" height="474" key="GridCell.Tab.1.bottom" timestamp="1587384656396">
+    <state width="2517" height="474" key="GridCell.Tab.0.right/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587390484556" />
+    <state width="2517" height="474" key="GridCell.Tab.1.bottom" timestamp="1587390484476">
       <screen x="0" y="0" width="2560" height="1379" />
     </state>
-    <state width="2517" height="474" key="GridCell.Tab.1.bottom/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587384656396" />
-    <state width="2517" height="474" key="GridCell.Tab.1.center" timestamp="1587384656396">
+    <state width="2517" height="474" key="GridCell.Tab.1.bottom/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587390484476" />
+    <state width="2517" height="474" key="GridCell.Tab.1.center" timestamp="1587390484476">
       <screen x="0" y="0" width="2560" height="1379" />
     </state>
-    <state width="2517" height="474" key="GridCell.Tab.1.center/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587384656396" />
-    <state width="2517" height="474" key="GridCell.Tab.1.left" timestamp="1587384656396">
+    <state width="2517" height="474" key="GridCell.Tab.1.center/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587390484476" />
+    <state width="2517" height="474" key="GridCell.Tab.1.left" timestamp="1587390484476">
       <screen x="0" y="0" width="2560" height="1379" />
     </state>
-    <state width="2517" height="474" key="GridCell.Tab.1.left/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587384656396" />
-    <state width="2517" height="474" key="GridCell.Tab.1.right" timestamp="1587384656396">
+    <state width="2517" height="474" key="GridCell.Tab.1.left/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587390484476" />
+    <state width="2517" height="474" key="GridCell.Tab.1.right" timestamp="1587390484476">
       <screen x="0" y="0" width="2560" height="1379" />
     </state>
-    <state width="2517" height="474" key="GridCell.Tab.1.right/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587384656396" />
+    <state width="2517" height="474" key="GridCell.Tab.1.right/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587390484476" />
     <state x="341" y="393" key="SettingsEditor" timestamp="1587378778570">
       <screen x="0" y="0" width="2560" height="1379" />
     </state>
     <state x="341" y="393" key="SettingsEditor/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587378778570" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/library/views/rents.py</url>
+          <line>63</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/library/views/rents.py</url>
+          <line>69</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/library/views/rents.py</url>
+          <line>62</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/library/views/rents.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="23" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/library/views/rents.py</url>
+          <line>72</line>
+          <option name="timeStamp" value="24" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/library/views/rents.py</url>
+          <line>66</line>
+          <option name="timeStamp" value="25" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
