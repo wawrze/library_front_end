@@ -135,7 +135,7 @@ def new_catalog_position(request):
             if response.status_code == 200:
                 return redirect('catalog')
             else:
-                error = 'Nieznany błąd: ' + response.content
+                error = 'Nieznany błąd: ' + str(response.content)
 
     template = loader.get_template('catalog/new.html')
     context = {

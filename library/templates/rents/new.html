@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% block title %}Nowe wypożyczenie{% endblock %}
+
+{% block content %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="container">
+        <main role="main" class="pb-3">
+            <h1>Nowe wypożyczenie</h1>
+            <hr>
+            <form id="filters" method="get">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        <h3>Wybór pozycji</h3>
+                    <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!--suppress HtmlDeprecatedAttribute -->
+                                <p align="right">
+                                    <input type="button" value="Resetuj filtry" onClick="clearTitleFilters()"
+                                           class="btn btn-outline-warning" form="filters"/>
+                                    <input type="submit" id="applyTitleFiltersButton" value="Zastosuj filtry"
+                                           class="btn btn-info"
+                                           form="filters"/>
+                                </p>
+                            </div>
+                        </div>
+                        <table id="titles" class="table table-bordered sortable">
+                            <thead>
+                            <tr>
+                                <th class="sorter-textPL">Autor</th>
+                                <th class="sorter-textPL">Tytuł</th>
+                                <th class="sorter-simpleNumber">Rok wydania</th>
+                            </tr>
+                            </thead>
+                            <tbody class="tablesorter-no-sort">
+                            <tr>
+                                <td style="background-color: #99bfe6; vertical-align: middle">
+                                    <input type="text" id="authorFilter" name="author" value="{{ author }}">
+                                </td>
+                                <td style="background-color: #99bfe6; vertical-align: middle">
+                                    <input type="text" id="titleFilter" name="title" value="{{ title }}">
+                                </td>
+                                <td style="background-color: #99bfe6">
+                                    od: <input type="number" step="1" min="1950" max='2020' id="yearFromFilter"
+                                               name="year_from"
+                                               value="{{ yearFrom }}">
+                                    <br>
+                                    do: <input type="number" step="1" min="1950" max='2020' id="yearToFilter"
+                                               name="year_to"
+                                               value="{{ yearTo }}">
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody>
+                            {% for t in titles %}
+                                <tr onclick="location.href = '/rents/new/{{ t.id }}/bookAndReaderChose'">
+                                    <td>{{ t.author }}</td>
+                                    <td>{{ t.title }}</td>
+                                    <td>{{ t.publicationYear }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-6">
+                        <h3>Wybór czytelnika</h3>
+                    <hr>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <!--suppress HtmlDeprecatedAttribute -->
+                                <p align="right">
+                                    <input type="button" value="Resetuj filtry" onClick="clearReaderFilters()"
+                                           class="btn btn-outline-warning" form="filters"/>
+                                    <input type="submit" id="applyReaderFiltersButton" value="Zastosuj filtry"
+                                           class="btn btn-info"
+                                           form="filters"/>
+                                </p>
+                            </div>
+                        </div>
+                        <table id="readers" class="table table-bordered sortable">
+                            <thead>
+                            <tr>
+                                <th class="sorter-textPL">Nazwa użytkownika</th>
+                                <th class="sorter-textPL">Imię</th>
+                                <th class="sorter-simpleNumber">Nazwisko</th>
+                            </tr>
+                            </thead>
+                            <tbody class="tablesorter-no-sort">
+                            <tr>
+                                <td style="background-color: #99bfe6; vertical-align: middle">
+                                    <input type="text" id="loginFilter" name="loginFilter" value="{{ filterLogin }}">
+                                </td>
+                                <td style="background-color: #99bfe6; vertical-align: middle">
+                                    <input type="text" id="firstNameFilter" name="firstNameFilter"
+                                           value="{{ filterFirstName }}">
+                                </td>
+                                <td style="background-color: #99bfe6; vertical-align: middle">
+                                    <input type="text" id="lastNameFilter" name="lastNameFilter"
+                                           value="{{ filterLastName }}">
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody>
+                            {% for reader in readers %}
+                                <tr onclick="location.href = '/rents/new/{{ reader.id }}/titleChose'">
+                                    <td>{{ reader.login }}</td>
+                                    <td>{{ reader.firstName }}</td>
+                                    <td>{{ reader.lastName }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <!--suppress JSUnusedLocalSymbols -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.tablesorter.addParser({
+                id: 'textPL',
+                is: function (s, table, cell, $cell) {
+                    return false;
+                },
+                format: function (s, table, cell, $cell) {
+                    return s.toLowerCase().replace('ą', 'a').replace('ć', 'c').replace('ę', 'e').replace('ł', 'l').replace('ó', 'o').replace('ś', 's').replace('ż', 'z').replace('ź', 'z');
+                },
+                type: 'text'
+            });
+            $.tablesorter.addParser({
+                id: 'simpleNumber',
+                is: function (s, table, cell, $cell) {
+                    return false;
+                },
+                format: function (s, table, cell, $cell) {
+                    return s.replace('-', '');
+                },
+                type: 'text'
+            });
+            $("#titles").tablesorter({
+                theme: 'blue',
+                widgets: ['zebra']
+            });
+            $("#readers").tablesorter({
+                theme: 'blue',
+                widgets: ['zebra']
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function clearTitleFilters() {
+            document.getElementById("authorFilter").value = null;
+            document.getElementById("titleFilter").value = null;
+            document.getElementById("yearFromFilter").value = null;
+            document.getElementById("yearToFilter").value = null;
+        }
+
+        function clearReaderFilters() {
+            document.getElementById("loginFilter").value = null;
+            document.getElementById("firstNameFilter").value = null;
+            document.getElementById("lastNameFilter").value = null;
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %}Nowe wypożyczenie{% endblock %}
+
+{% block content %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="container">
+        <main role="main" class="pb-3">
+            <h1>Nowe wypożyczenie</h1>
+            <hr>
+            <form id="filters" method="get">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-6">
+                        <h3>Wybór Książki</h3>
+                        <hr>
+                        <h4>Wybrana pozycja</h4>
+                        <dl class="row">
+                            <dt class="col-sm-3">
+                                Autor
+                            </dt>
+                            <dd class="col-sm-9">
+                                {{ title.author }}
+                            </dd>
+                            <dt class="col-sm-3">
+                                Tytuł
+                            </dt>
+                            <dd class="col-sm-9">
+                                {{ title.title }}
+                            </dd>
+                            <dt class="col-sm-3">
+                                Rok wydania
+                            </dt>
+                            <dd class="col-sm-9">
+                                {{ title.publicationYear }}
+                            </dd>
+                        </dl>
+                        <hr>
+                        <h4 style="text-align:left;float:left;">Wypożyczenie na</h4>
+                        <select class="ml-3" onchange="location = this.value;">
+                          <option value="" disabled selected style="display:none;"></option>
+                            {% for book in title.books %}
+                                <option value="/rents/new/{{ book.id }}/{{ reader.id }}/summary">{{ book.rentDays }} dni
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <h3>Wybrany czytelnik</h3>
+                        <hr>
+                        <dl class="row">
+                            <dt class="col-sm-3">
+                                Nazwa użytkownika
+                            </dt>
+                            <dd class="col-sm-7">
+                                {{ reader.login }}
+                            </dd>
+                            <dt class="col-sm-3">
+                                Imię
+                            </dt>
+                            <dd class="col-sm-7">
+                                {{ reader.firstName }}
+                            </dd>
+                            <dt class="col-sm-3">
+                                Nazwisko
+                            </dt>
+                            <dd class="col-sm-7">
+                                {{ reader.lastName }}
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <!--suppress JSUnusedLocalSymbols -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.tablesorter.addParser({
+                id: 'textPL',
+                is: function (s, table, cell, $cell) {
+                    return false;
+                },
+                format: function (s, table, cell, $cell) {
+                    return s.toLowerCase().replace('ą', 'a').replace('ć', 'c').replace('ę', 'e').replace('ł', 'l').replace('ó', 'o').replace('ś', 's').replace('ż', 'z').replace('ź', 'z');
+                },
+                type: 'text'
+            });
+            $.tablesorter.addParser({
+                id: 'simpleNumber',
+                is: function (s, table, cell, $cell) {
+                    return false;
+                },
+                format: function (s, table, cell, $cell) {
+                    return s.replace('-', '');
+                },
+                type: 'text'
+            });
+            $("#titles").tablesorter({
+                theme: 'blue',
+                widgets: ['zebra']
+            });
+            $("#readers").tablesorter({
+                theme: 'blue',
+                widgets: ['zebra']
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        function clearTitleFilters() {
+            document.getElementById("authorFilter").value = null;
+            document.getElementById("titleFilter").value = null;
+            document.getElementById("yearFromFilter").value = null;
+            document.getElementById("yearToFilter").value = null;
+        }
+
+        function clearReaderFilters() {
+            document.getElementById("loginFilter").value = null;
+            document.getElementById("firstNameFilter").value = null;
+            document.getElementById("lastNameFilter").value = null;
+        }
+    </script>
+{% endblock %}

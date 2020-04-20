@@ -30,5 +30,12 @@ urlpatterns = [
     path('admins/<int:admin_id>/details', admins.admin_details, name='adminDetails'),
     path('admins/<int:admin_id>/edit', admins.edit_admin, name='editAdmin'),
     path('admins/<int:admin_id>/delete', admins.delete_admin, name='deleteAdmin'),
-    path('rents', rents.rent_list, name='rents')
+    path('rents', rents.rent_list, name='rents'),
+    path('rents/new/titleAndReaderChose', rents.new_title_and_reader_chose, name='newRentTitleAndReaderChoose'),
+    path('rents/new/<int:title_id>/bookAndReaderChose', rents.new_book_and_reader_chose, name='newRentBookAndReaderChoose'),
+    path('rents/new/<int:book_id>/readerChose', rents.new_reader_chose, name='newRentReaderChoose'),
+    path('rents/new/<int:reader_id>/titleChose', rents.new_title_chose, name='newRentTitleChoose'),
+    path('rents/new/<int:title_id>/<int:reader_id>/bookChose', rents.new_book_chose, name='newRentBookChoose'),
+    path('rents/new/<int:book_id>/<int:reader_id>/summary', rents.new_summary, name='newRentSummary'),
+    path('rents/new/<int:book_id>/<int:reader_id>/confirm', rents.new_confirm, name='newRentConfirm'),
 ]

@@ -1,7 +1,7 @@
-from datetime import datetime
-
+import datetime
 import requests
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template import loader
 
 
@@ -18,12 +18,12 @@ def rent_list(request):
 
     for rent in rents:
         try:
-            rent_to = datetime.strptime(rent['rentFinishDate'], '%Y-%m-%d')
+            rent_to = datetime.datetime.strptime(rent['rentFinishDate'], '%Y-%m-%d')
         except ValueError:
             rent_to = None
         except TypeError:
             rent_to = None
-        rent['status'] = rent_to.date() < datetime.now().date()
+        rent['status'] = rent_to.date() < datetime.datetime.now().date()
 
     if request.method == 'POST':
         try:
@@ -139,3 +139,330 @@ def rent_list(request):
     }
 
     return HttpResponse(template.render(context, request))
+
+
+def new_title_and_reader_chose(request):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        user = None
+        token = ''
+
+    response = requests.get('http://127.0.0.1:8080/title/getTitlesWithAvailableBooks')
+    titles = list(response.json())
+
+    try:
+        author = request.GET['author']
+    except KeyError:
+        author = ''
+    try:
+        title = request.GET['title']
+    except KeyError:
+        title = ''
+    try:
+        year_from = request.GET['year_from']
+    except KeyError:
+        year_from = ''
+    try:
+        year_to = request.GET['year_to']
+    except KeyError:
+        year_to = ''
+
+    if author is not None and author != '':
+        filtered_titles = list(filter(lambda t: author in t['author'], titles))
+        titles = filtered_titles
+    if title is not None and title != '':
+        filtered_titles = list(filter(lambda t: title in t['title'], titles))
+        titles = filtered_titles
+    if year_from is not None and year_from != '':
+        filtered_titles = list(filter(lambda t: t['publicationYear'] >= int(year_from), titles))
+        titles = filtered_titles
+    if year_to is not None and year_to != '':
+        filtered_titles = list(filter(lambda t: t['publicationYear'] <= int(year_to), titles))
+        titles = filtered_titles
+
+    response = requests.get('http://127.0.0.1:8080/users/getUsers', headers={'Authorization': token})
+    readers = list(response.json())
+
+    try:
+        login = request.GET['loginFilter']
+    except KeyError:
+        login = ''
+    try:
+        first_name = request.GET['firstNameFilter']
+    except KeyError:
+        first_name = ''
+    try:
+        last_name = request.GET['lastNameFilter']
+    except KeyError:
+        last_name = ''
+
+    if login is not None and login != '':
+        filtered_readers = list(filter(lambda r: login in r['login'], readers))
+        readers = filtered_readers
+    if first_name is not None and first_name != '':
+        filtered_readers = list(filter(lambda r: first_name in r['firstName'], readers))
+        readers = filtered_readers
+    if last_name is not None and last_name != '':
+        filtered_readers = list(filter(lambda r: last_name in r['lastName'], readers))
+        readers = filtered_readers
+
+    template = loader.get_template('rents/new.html')
+    context = {
+        'titles': titles,
+        'readers': readers,
+        'user': user,
+        'author': author,
+        'title': title,
+        'yearFrom': year_from,
+        'yearTo': year_to,
+        'filterLogin': login,
+        'filterFirstName': first_name,
+        'filterLastName': last_name
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def new_book_and_reader_chose(request, title_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        user = None
+        token = ''
+
+    response = requests.get('http://127.0.0.1:8080/title/getTitle?titleId=' + str(title_id))
+    title = response.json()
+    books = title['books']
+    filtered_books = list(filter(lambda b: b['rentTo'] is None or b['rentTo'] == '', books))
+    title['books'] = filtered_books
+
+    response = requests.get('http://127.0.0.1:8080/users/getUsers', headers={'Authorization': token})
+    readers = list(response.json())
+
+    try:
+        login = request.GET['loginFilter']
+    except KeyError:
+        login = ''
+    try:
+        first_name = request.GET['firstNameFilter']
+    except KeyError:
+        first_name = ''
+    try:
+        last_name = request.GET['lastNameFilter']
+    except KeyError:
+        last_name = ''
+
+    if login is not None and login != '':
+        filtered_readers = list(filter(lambda r: login in r['login'], readers))
+        readers = filtered_readers
+    if first_name is not None and first_name != '':
+        filtered_readers = list(filter(lambda r: first_name in r['firstName'], readers))
+        readers = filtered_readers
+    if last_name is not None and last_name != '':
+        filtered_readers = list(filter(lambda r: last_name in r['lastName'], readers))
+        readers = filtered_readers
+
+    template = loader.get_template('rents/newTitleChosen.html')
+    context = {
+        'title': title,
+        'readers': readers,
+        'user': user,
+        'filterLogin': login,
+        'filterFirstName': first_name,
+        'filterLastName': last_name
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def new_reader_chose(request, book_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        user = None
+        token = ''
+
+    response = requests.get('http://127.0.0.1:8080/books/getBook?bookId=' + str(book_id),
+                            headers={'Authorization': token})
+    book = response.json()
+    rent_days = book['rentDays']
+    rent_to = datetime.date.today()
+    rent_to = rent_to + datetime.timedelta(days=int(rent_days))
+    rent_to = rent_to.strftime("%Y-%m-%d")
+
+    response = requests.get('http://127.0.0.1:8080/users/getUsers', headers={'Authorization': token})
+    readers = list(response.json())
+
+    try:
+        login = request.GET['loginFilter']
+    except KeyError:
+        login = ''
+    try:
+        first_name = request.GET['firstNameFilter']
+    except KeyError:
+        first_name = ''
+    try:
+        last_name = request.GET['lastNameFilter']
+    except KeyError:
+        last_name = ''
+
+    if login is not None and login != '':
+        filtered_readers = list(filter(lambda r: login in r['login'], readers))
+        readers = filtered_readers
+    if first_name is not None and first_name != '':
+        filtered_readers = list(filter(lambda r: first_name in r['firstName'], readers))
+        readers = filtered_readers
+    if last_name is not None and last_name != '':
+        filtered_readers = list(filter(lambda r: last_name in r['lastName'], readers))
+        readers = filtered_readers
+
+    template = loader.get_template('rents/newBookChosen.html')
+    context = {
+        'book': book,
+        'readers': readers,
+        'user': user,
+        'rentTo': rent_to,
+        'filterLogin': login,
+        'filterFirstName': first_name,
+        'filterLastName': last_name
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def new_title_chose(request, reader_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        user = None
+        token = ''
+
+    response = requests.get('http://127.0.0.1:8080/title/getTitlesWithAvailableBooks')
+    titles = list(response.json())
+
+    try:
+        author = request.GET['author']
+    except KeyError:
+        author = ''
+    try:
+        title = request.GET['title']
+    except KeyError:
+        title = ''
+    try:
+        year_from = request.GET['year_from']
+    except KeyError:
+        year_from = ''
+    try:
+        year_to = request.GET['year_to']
+    except KeyError:
+        year_to = ''
+
+    if author is not None and author != '':
+        filtered_titles = list(filter(lambda t: author in t['author'], titles))
+        titles = filtered_titles
+    if title is not None and title != '':
+        filtered_titles = list(filter(lambda t: title in t['title'], titles))
+        titles = filtered_titles
+    if year_from is not None and year_from != '':
+        filtered_titles = list(filter(lambda t: t['publicationYear'] >= int(year_from), titles))
+        titles = filtered_titles
+    if year_to is not None and year_to != '':
+        filtered_titles = list(filter(lambda t: t['publicationYear'] <= int(year_to), titles))
+        titles = filtered_titles
+
+    response = requests.get(
+        'http://127.0.0.1:8080/users/getUser?userId=' + str(reader_id),
+        headers={'Authorization': token}
+    )
+    reader = response.json()
+
+    template = loader.get_template('rents/newReaderChosen.html')
+    context = {
+        'titles': titles,
+        'reader': reader,
+        'user': user,
+        'author': author,
+        'title': title,
+        'yearFrom': year_from,
+        'yearTo': year_to
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def new_book_chose(request, title_id, reader_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        user = None
+        token = ''
+
+    response = requests.get('http://127.0.0.1:8080/title/getTitle?titleId=' + str(title_id))
+    title = response.json()
+    books = title['books']
+    filtered_books = list(filter(lambda b: b['rentTo'] is None or b['rentTo'] == '', books))
+    title['books'] = filtered_books
+
+    response = requests.get(
+        'http://127.0.0.1:8080/users/getUser?userId=' + str(reader_id),
+        headers={'Authorization': token}
+    )
+    reader = response.json()
+
+    template = loader.get_template('rents/newTitleAndReaderChosen.html')
+    context = {
+        'title': title,
+        'reader': reader,
+        'user': user
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def new_summary(request, book_id, reader_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        user = None
+        token = ''
+
+    response = requests.get('http://127.0.0.1:8080/books/getBook?bookId=' + str(book_id),
+                            headers={'Authorization': token})
+    book = response.json()
+    rent_days = book['rentDays']
+    rent_to = datetime.date.today()
+    rent_to = rent_to + datetime.timedelta(days=int(rent_days))
+    rent_to = rent_to.strftime("%Y-%m-%d")
+    response = requests.get(
+        'http://127.0.0.1:8080/users/getUser?userId=' + str(reader_id),
+        headers={'Authorization': token}
+    )
+    reader = response.json()
+
+    template = loader.get_template('rents/newSummary.html')
+    context = {
+        'book': book,
+        'reader': reader,
+        'user': user,
+        'rentTo': rent_to
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def new_confirm(request, book_id, reader_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+
+    response = requests.post(
+        'http://127.0.0.1:8080/rents/createRent?bookId=' + str(book_id) + '&userId=' + str(reader_id),
+        headers={'Authorization': token}
+    )
+    if response.status_code == 200:
+        return redirect('rents')
+    else:
+        return redirect('/rents/new/' + str(book_id) + '/' + str(reader_id) + '/summary')
