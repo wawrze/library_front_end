@@ -2,7 +2,10 @@ from datetime import datetime
 
 import requests
 from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.template import loader
+
+from library.pwd_helper import hash_password
 
 
 def reader_list(request):
@@ -72,5 +75,92 @@ def reader_list(request):
         'filterRentsTo': filter_rents_to,
         'filterDateFrom': filter_date_from,
         'filterDateTo': filter_date_to
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def reader_details(request, reader_id):
+    template = loader.get_template('readers/details.html')
+
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        user = None
+        token = ''
+
+    response = requests.get(
+        'http://127.0.0.1:8080/users/getUser?userId=' + str(reader_id),
+        headers={'Authorization': token}
+    )
+    reader = response.json()
+    rent_count = len(reader['rents'])
+
+    for rent in reader['rents']:
+        try:
+            rent_to = datetime.strptime(rent['rentFinishDate'], '%Y-%m-%d')
+        except ValueError:
+            rent_to = None
+        except TypeError:
+            rent_to = None
+        rent['status'] = rent_to.date() < datetime.now().date()
+
+    context = {
+        'reader': reader,
+        'user': user,
+        'rentCount': rent_count
+    }
+
+    return HttpResponse(template.render(context, request))
+
+
+def edit_reader(request, reader_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+        user = None
+    password = ''
+    error = ''
+
+    response = requests.get(
+        'http://127.0.0.1:8080/users/getUser?userId=' + str(reader_id),
+        headers={'Authorization': token}
+    )
+    reader = response.json()
+    first_name = reader['firstName']
+    last_name = reader['lastName']
+
+    if request.method == 'POST':
+        first_name = request.POST['firstName']
+        last_name = request.POST['lastName']
+        password = request.POST['password']
+
+        if first_name == '' or last_name == '':
+            error = 'Musisz podać imię i nazwisko!'
+        else:
+            body = reader
+            body['firstName'] = first_name
+            body['lastName'] = last_name
+            body['password'] = hash_password(password)
+            response = requests.post(
+                'http://127.0.0.1:8080/users/updateUser',
+                headers={'Authorization': token},
+                json=body
+            )
+            if response.status_code == 200:
+                return redirect('/readers/' + str(reader_id) + '/details')
+            else:
+                error = 'Nieznany błąd: ' + str(response.content)
+
+    template = loader.get_template('readers/edit.html')
+    context = {
+        'error': error,
+        'firstName': first_name,
+        'user': user,
+        'reader': reader,
+        'lastName': last_name,
+        'password': password
     }
     return HttpResponse(template.render(context, request))
