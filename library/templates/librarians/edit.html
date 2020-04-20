@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Edycja danych bibliotekarza{% endblock %}
+
+{% block content %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="container">
+        <main role="main" class="pb-3">
+            <h1>Edycja danych bibliotekarza</h1>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label class="control-label">Imię</label>
+                            <input class="form-control" name="firstName" value="{{ firstName }}"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Nazwisko</label>
+                            <input class="form-control" name="lastName" value="{{ lastName }}"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Nazwa użytkownika</label>
+                            <input class="form-control" name="firstName" value="{{ librarian.login }}"
+                                   disabled="disabled"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Data założenia konta</label>
+                            <input class="form-control" name="firstName" value="{{ librarian.accountCreationDate }}"
+                                   disabled="disabled"/>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label">Hasło</label>
+                            <input name="password" id="passwordInput" class="form-control"
+                                   value="{{ password }}" hidden="hidden"/>
+                            <div>
+                                <button type="button" id="passwordButton" class="btn btn-primary"
+                                        onClick="generatePassword()">Generuj nowe hasło
+                                </button>
+                                <button type="button" id="cancelButton" class="btn btn-primary"
+                                        onClick="cancelPasswordChange()" hidden="hidden">Nie zmieniaj hasła
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Zapisz zmiany" class="btn btn-primary"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <script type="text/javascript">
+        function generatePassword() {
+            let generated = "";
+            const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!#$%^&*(),.;':";
+            for (let i = 0; i < 10; i++) generated += possible.charAt(Math.floor(Math.random() * possible.length));
+            document.getElementById("passwordInput").value = generated;
+            document.getElementById("passwordInput").hidden = false;
+            document.getElementById("passwordButton").hidden = true;
+            document.getElementById("cancelButton").hidden = false;
+        }
+
+        function cancelPasswordChange() {
+            document.getElementById("passwordInput").value = "{{ password }}";
+            document.getElementById("passwordInput").hidden = true;
+            document.getElementById("passwordButton").hidden = false;
+            document.getElementById("cancelButton").hidden = true;
+        }
+    </script>
+{% endblock %}

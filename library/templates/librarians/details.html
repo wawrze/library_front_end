@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Dane bibliotekarza{% endblock %}
+
+{% block content %}
+    <!--suppress HtmlFormInputWithoutLabel -->
+    <div class="container">
+        <h1>Dane bibliotekarza</h1>
+        <hr>
+        <div>
+            <dl class="row">
+                <dt class="col-sm-2">
+                    Imię
+                </dt>
+                <dd class="col-sm-10">
+                    {{ librarian.firstName }}
+                </dd>
+                <dt class="col-sm-2">
+                    Nazwisko
+                </dt>
+                <dd class="col-sm-10">
+                    {{ librarian.lastName }}
+                </dd>
+                <dt class="col-sm-2">
+                    login
+                </dt>
+                <dd class="col-sm-10">
+                    {{ librarian.login }}
+                </dd>
+                <dt class="col-sm-2">
+                    Data założenia konta
+                </dt>
+                <dd class="col-sm-10">
+                    {{ librarian.accountCreationDate }}
+                </dd>
+            </dl>
+        </div>
+        <hr>
+        <div>
+            <a href="/librarians/{{ librarian.id }}/edit">
+                <input class="btn btn-info" type="button" value="Edytuj"/>
+            </a>
+        </div>
+        <br>
+        <div>
+            <form action="/librarians/{{ librarian.id }}/delete" method="post">
+                {% csrf_token %}
+                <input
+                        class="btn btn-danger"
+                        role="button"
+                        type="submit"
+                        onclick="return confirm('Jesteś pewien?')"
+                        value="Usuń"
+                >
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block scripts %}
+    <!--suppress JSUnusedLocalSymbols -->
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#rents").tablesorter({
+                theme: 'blue',
+                widgets: ['zebra']
+            });
+        });
+    </script>
+{% endblock %}

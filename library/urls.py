@@ -1,6 +1,6 @@
 from django.urls import path
 
-from library.views import catalog, user, readers
+from library.views import catalog, user, readers, librarians
 
 urlpatterns = [
     path('', catalog.index, name='index'),
@@ -20,4 +20,9 @@ urlpatterns = [
     path('readers/<int:reader_id>/details', readers.reader_details, name='readerDetails'),
     path('readers/<int:reader_id>/edit', readers.edit_reader, name='editReader'),
     path('readers/<int:reader_id>/delete', readers.delete_reader, name='deleteReader'),
+    path('librarians', librarians.librarian_list, name='librarians'),
+    path('librarians/new', librarians.new_librarian, name='newLibrarian'),
+    path('librarians/<int:librarian_id>/details', librarians.librarian_details, name='librarianDetails'),
+    path('librarians/<int:librarian_id>/edit', librarians.edit_librarian, name='editLibrarian'),
+    path('librarians/<int:librarian_id>/delete', librarians.delete_librarian, name='deleteLibrarian'),
 ]
