@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7f315924-8423-4b3f-ac80-8827cc5e29d4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/library/templates/readers/readers.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/library/views/readers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/templates/catalog/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/catalog/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/library/views/catalog.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/views/catalog.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/templates/catalog/books.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/catalog/books.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/templates/user/userDetails.html" beforeDir="false" afterPath="$PROJECT_DIR$/library/templates/user/userDetails.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/library/views/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/library/views/user.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +93,7 @@
       <workItem from="1587105416764" duration="26866000" />
       <workItem from="1587144790699" duration="5000" />
       <workItem from="1587372977723" duration="4536000" />
-      <workItem from="1587378721121" duration="59000" />
+      <workItem from="1587378721121" duration="1883000" />
     </task>
     <servers />
   </component>
@@ -117,6 +113,38 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state width="2517" height="474" key="GridCell.Tab.0.bottom" timestamp="1587380785552">
+      <screen x="0" y="0" width="2560" height="1379" />
+    </state>
+    <state width="2517" height="474" key="GridCell.Tab.0.bottom/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587380785552" />
+    <state width="2517" height="474" key="GridCell.Tab.0.center" timestamp="1587380785552">
+      <screen x="0" y="0" width="2560" height="1379" />
+    </state>
+    <state width="2517" height="474" key="GridCell.Tab.0.center/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587380785552" />
+    <state width="2517" height="474" key="GridCell.Tab.0.left" timestamp="1587380785552">
+      <screen x="0" y="0" width="2560" height="1379" />
+    </state>
+    <state width="2517" height="474" key="GridCell.Tab.0.left/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587380785552" />
+    <state width="2517" height="474" key="GridCell.Tab.0.right" timestamp="1587380785552">
+      <screen x="0" y="0" width="2560" height="1379" />
+    </state>
+    <state width="2517" height="474" key="GridCell.Tab.0.right/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587380785552" />
+    <state width="2517" height="474" key="GridCell.Tab.1.bottom" timestamp="1587380785554">
+      <screen x="0" y="0" width="2560" height="1379" />
+    </state>
+    <state width="2517" height="474" key="GridCell.Tab.1.bottom/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587380785554" />
+    <state width="2517" height="474" key="GridCell.Tab.1.center" timestamp="1587380785552">
+      <screen x="0" y="0" width="2560" height="1379" />
+    </state>
+    <state width="2517" height="474" key="GridCell.Tab.1.center/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587380785552" />
+    <state width="2517" height="474" key="GridCell.Tab.1.left" timestamp="1587380785552">
+      <screen x="0" y="0" width="2560" height="1379" />
+    </state>
+    <state width="2517" height="474" key="GridCell.Tab.1.left/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587380785552" />
+    <state width="2517" height="474" key="GridCell.Tab.1.right" timestamp="1587380785552">
+      <screen x="0" y="0" width="2560" height="1379" />
+    </state>
+    <state width="2517" height="474" key="GridCell.Tab.1.right/2560.0.1920.1019/-1920.355.1920.1050/0.0.2560.1379@0.0.2560.1379" timestamp="1587380785552" />
     <state x="341" y="393" key="SettingsEditor" timestamp="1587378778570">
       <screen x="0" y="0" width="2560" height="1379" />
     </state>

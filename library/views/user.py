@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -69,6 +71,19 @@ def user_details(request):
 
     try:
         user = request.session['user']
+        response = requests.get(
+            'http://127.0.0.1:8080/users/getUser?userId=' + str(user['id']),
+            headers={'Authorization': user['token']}
+        )
+        response_user = response.json()
+        for rent in response_user['rents']:
+            try:
+                rent_to = datetime.strptime(rent['rentFinishDate'], '%Y-%m-%d')
+            except ValueError:
+                rent_to = None
+            except TypeError:
+                rent_to = None
+            rent['status'] = rent_to.date() < datetime.now().date()
     except KeyError:
         user = None
 
@@ -85,30 +100,30 @@ def user_details(request):
             error_message = 'Hasła się nie zgadzają!'
         else:
             body = {
-                'accountCreationDate': user['accountCreationDate'],
-                'firstName': user['firstName'],
-                'id': user['id'],
-                'lastName': user['lastName'],
-                'login': user['login'],
+                'accountCreationDate': response_user['accountCreationDate'],
+                'firstName': response_user['firstName'],
+                'id': response_user['id'],
+                'lastName': response_user['lastName'],
+                'login': response_user['login'],
                 'password': hash_password(new_password),
                 'token': '',
-                'userRole': user['userRole']
+                'userRole': response_user['userRole']
             }
             response = requests.post(
                 'http://127.0.0.1:8080/users/updateUser',
-                headers={'Authorization': user['token']},
+                headers={'Authorization': response_user['token']},
                 json=body
             )
             if response.status_code == 200:
-                user['password'] = hash_password(new_password)
-                request.session['user'] = user
+                response_user['password'] = hash_password(new_password)
+                request.session['user'] = response_user
                 success_message = 'Hasło zostało zmienione.'
                 error_message = ''
                 old_password = ''
                 new_password = ''
                 new_password_confirmation = ''
             elif response.status_code == 500:
-                error_message = 'Nieznany błąd: ' + response.content
+                error_message = 'Nieznany błąd: ' + str(response.content)
 
     context = {
         'errorMessage': error_message,
@@ -116,7 +131,7 @@ def user_details(request):
         'oldPassword': old_password,
         'newPassword': new_password,
         'newPasswordConfirmation': new_password_confirmation,
-        'user': user
+        'user': response_user
     }
 
     return HttpResponse(template.render(context, request))
