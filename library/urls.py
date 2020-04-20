@@ -1,6 +1,6 @@
 from django.urls import path
 
-from library.views import catalog, user, readers, librarians
+from library.views import catalog, user, readers, librarians, admins
 
 urlpatterns = [
     path('', catalog.index, name='index'),
@@ -25,4 +25,9 @@ urlpatterns = [
     path('librarians/<int:librarian_id>/details', librarians.librarian_details, name='librarianDetails'),
     path('librarians/<int:librarian_id>/edit', librarians.edit_librarian, name='editLibrarian'),
     path('librarians/<int:librarian_id>/delete', librarians.delete_librarian, name='deleteLibrarian'),
+    path('admins', admins.admin_list, name='admins'),
+    path('admins/new', admins.new_admin, name='newadmin'),
+    path('admins/<int:admin_id>/details', admins.admin_details, name='adminDetails'),
+    path('admins/<int:admin_id>/edit', admins.edit_admin, name='editadmin'),
+    path('admins/<int:admin_id>/delete', admins.delete_admin, name='deleteadmin'),
 ]

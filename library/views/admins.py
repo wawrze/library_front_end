@@ -8,7 +8,7 @@ from django.template import loader
 from library.pwd_helper import hash_password
 
 
-def librarian_list(request):
+def admin_list(request):
     try:
         user = request.session['user']
         token = user['token']
@@ -16,8 +16,8 @@ def librarian_list(request):
         token = ''
         user = None
 
-    response = requests.get('http://127.0.0.1:8080/users/getLibrarians', headers={'Authorization': token})
-    librarians = list(response.json())
+    response = requests.get('http://127.0.0.1:8080/users/getAdmins', headers={'Authorization': token})
+    admins = list(response.json())
 
     filter_login = ''
     filter_first_name = ''
@@ -33,29 +33,29 @@ def librarian_list(request):
         filter_date_to = request.POST['dateToFilter']
 
         if filter_login != '':
-            filtered_readers = list(filter(lambda r: filter_login in r['login'], librarians))
-            librarians = filtered_readers
+            filtered_readers = list(filter(lambda r: filter_login in r['login'], admins))
+            admins = filtered_readers
         if filter_first_name != '':
-            filtered_readers = list(filter(lambda r: filter_first_name in r['firstName'], librarians))
-            librarians = filtered_readers
+            filtered_readers = list(filter(lambda r: filter_first_name in r['firstName'], admins))
+            admins = filtered_readers
         if filter_last_name != '':
-            filtered_readers = list(filter(lambda r: filter_last_name in r['lastName'], librarians))
-            librarians = filtered_readers
+            filtered_readers = list(filter(lambda r: filter_last_name in r['lastName'], admins))
+            admins = filtered_readers
         if filter_date_from != '':
             filtered_readers = list(filter(
                 lambda r: datetime.strptime(r['accountCreationDate'], '%Y-%m-%d') >= datetime.strptime(
-                    filter_date_from, '%Y-%m-%d'), librarians))
-            librarians = filtered_readers
+                    filter_date_from, '%Y-%m-%d'), admins))
+            admins = filtered_readers
         if filter_date_to != '':
             filtered_readers = list(filter(
                 lambda r: datetime.strptime(r['accountCreationDate'], '%Y-%m-%d') <= datetime.strptime(
-                    filter_date_to, '%Y-%m-%d'), librarians))
-            librarians = filtered_readers
+                    filter_date_to, '%Y-%m-%d'), admins))
+            admins = filtered_readers
 
-    template = loader.get_template('librarians/librarians.html')
+    template = loader.get_template('admins/admins.html')
     context = {
         'user': user,
-        'librarians': librarians,
+        'admins': admins,
         'filterLogin': filter_login,
         'filterFirstName': filter_first_name,
         'filterLastName': filter_last_name,
@@ -65,8 +65,8 @@ def librarian_list(request):
     return HttpResponse(template.render(context, request))
 
 
-def librarian_details(request, librarian_id):
-    template = loader.get_template('librarians/details.html')
+def admin_details(request, admin_id):
+    template = loader.get_template('admins/details.html')
 
     try:
         user = request.session['user']
@@ -76,20 +76,20 @@ def librarian_details(request, librarian_id):
         token = ''
 
     response = requests.get(
-        'http://127.0.0.1:8080/users/getUser?userId=' + str(librarian_id),
+        'http://127.0.0.1:8080/users/getUser?userId=' + str(admin_id),
         headers={'Authorization': token}
     )
-    librarian = response.json()
+    admin = response.json()
 
     context = {
-        'librarian': librarian,
+        'admin': admin,
         'user': user
     }
 
     return HttpResponse(template.render(context, request))
 
 
-def new_librarian(request):
+def new_admin(request):
     try:
         user = request.session['user']
         token = user['token']
@@ -116,7 +116,7 @@ def new_librarian(request):
                 'lastName': last_name,
                 'login': login,
                 'password': hash_password(password),
-                'userRole': 'LIBRARIAN'
+                'userRole': 'ADMIN'
             }
             response = requests.post(
                 'http://127.0.0.1:8080/users/createUser',
@@ -124,13 +124,13 @@ def new_librarian(request):
                 json=body
             )
             if response.status_code == 200:
-                return redirect('/librarians')
+                return redirect('/admins')
             elif response.status_code == 403:
                 error = 'Wybrana nazwa użytkownika jest zajęta!'
             else:
                 error = 'Nieznany błąd: ' + str(response.content)
 
-    template = loader.get_template('librarians/new.html')
+    template = loader.get_template('admins/new.html')
     context = {
         'error': error,
         'firstName': first_name,
@@ -142,7 +142,7 @@ def new_librarian(request):
     return HttpResponse(template.render(context, request))
 
 
-def edit_librarian(request, librarian_id):
+def edit_admin(request, admin_id):
     try:
         user = request.session['user']
         token = user['token']
@@ -153,12 +153,12 @@ def edit_librarian(request, librarian_id):
     error = ''
 
     response = requests.get(
-        'http://127.0.0.1:8080/users/getUser?userId=' + str(librarian_id),
+        'http://127.0.0.1:8080/users/getUser?userId=' + str(admin_id),
         headers={'Authorization': token}
     )
-    librarian = response.json()
-    first_name = librarian['firstName']
-    last_name = librarian['lastName']
+    admin = response.json()
+    first_name = admin['firstName']
+    last_name = admin['lastName']
 
     if request.method == 'POST':
         first_name = request.POST['firstName']
@@ -168,7 +168,7 @@ def edit_librarian(request, librarian_id):
         if first_name == '' or last_name == '':
             error = 'Musisz podać imię i nazwisko!'
         else:
-            body = librarian
+            body = admin
             body['firstName'] = first_name
             body['lastName'] = last_name
             body['password'] = hash_password(password)
@@ -178,23 +178,23 @@ def edit_librarian(request, librarian_id):
                 json=body
             )
             if response.status_code == 200:
-                return redirect('/librarians/' + str(librarian_id) + '/details')
+                return redirect('/admins/' + str(admin_id) + '/details')
             else:
                 error = 'Nieznany błąd: ' + str(response.content)
 
-    template = loader.get_template('librarians/edit.html')
+    template = loader.get_template('admins/edit.html')
     context = {
         'error': error,
         'firstName': first_name,
         'user': user,
-        'librarian': librarian,
+        'admin': admin,
         'lastName': last_name,
         'password': password
     }
     return HttpResponse(template.render(context, request))
 
 
-def delete_librarian(request, librarian_id):
+def delete_admin(request, admin_id):
     try:
         user = request.session['user']
         token = user['token']
@@ -202,11 +202,11 @@ def delete_librarian(request, librarian_id):
         token = ''
 
     response = requests.delete(
-        'http://127.0.0.1:8080/users/deleteUser?userId=' + str(librarian_id),
+        'http://127.0.0.1:8080/users/deleteUser?userId=' + str(admin_id),
         headers={'Authorization': token}
     )
     if response.status_code == 200:
-        return redirect('/librarians')
+        return redirect('/admins')
     else:
         print(response.content)
-        return redirect('/librarians/' + str(librarian_id) + '/details')
+        return redirect('/admins/' + str(admin_id) + '/details')
