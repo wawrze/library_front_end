@@ -114,6 +114,59 @@ def reader_details(request, reader_id):
     return HttpResponse(template.render(context, request))
 
 
+def new_reader(request):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+        user = None
+    first_name = ''
+    last_name = ''
+    login = ''
+    password = ''
+    error = ''
+
+    if request.method == 'POST':
+        first_name = request.POST['firstName']
+        last_name = request.POST['lastName']
+        login = request.POST['login']
+        password = request.POST['password']
+
+        if first_name == '' or last_name == '' or login == '' or password == '':
+            error = 'Musisz wypełnić wszystkie pola!'
+        else:
+            body = {
+                'firstName': first_name,
+                'lastName': last_name,
+                'login': login,
+                'password': hash_password(password),
+                'userRole': 'USER'
+            }
+            response = requests.post(
+                'http://127.0.0.1:8080/users/createUser',
+                headers={'Authorization': token},
+                json=body
+            )
+            if response.status_code == 200:
+                return redirect('/readers')
+            elif response.status_code == 403:
+                error = 'Wybrana nazwa użytkownika jest zajęta!'
+            else:
+                error = 'Nieznany błąd: ' + str(response.content)
+
+    template = loader.get_template('readers/new.html')
+    context = {
+        'error': error,
+        'firstName': first_name,
+        'user': user,
+        'lastName': last_name,
+        'login': login,
+        'password': password
+    }
+    return HttpResponse(template.render(context, request))
+
+
 def edit_reader(request, reader_id):
     try:
         user = request.session['user']
@@ -164,3 +217,21 @@ def edit_reader(request, reader_id):
         'password': password
     }
     return HttpResponse(template.render(context, request))
+
+
+def delete_reader(request, reader_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+
+    response = requests.delete(
+        'http://127.0.0.1:8080/users/deleteUser?userId=' + str(reader_id),
+        headers={'Authorization': token}
+    )
+    if response.status_code == 200:
+        return redirect('/readers')
+    else:
+        print(response.content)
+        return redirect('/readers/' + str(reader_id) + '/details')

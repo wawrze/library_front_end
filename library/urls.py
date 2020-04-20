@@ -16,6 +16,8 @@ urlpatterns = [
     path('user/details/', user.user_details, name='userDetails'),
     path('user/logout/', user.logout, name='logout'),
     path('readers', readers.reader_list, name='readers'),
+    path('readers/new', readers.new_reader, name='newReader'),
     path('readers/<int:reader_id>/details', readers.reader_details, name='readerDetails'),
     path('readers/<int:reader_id>/edit', readers.edit_reader, name='editReader'),
+    path('readers/<int:reader_id>/delete', readers.delete_reader, name='deleteReader'),
 ]
