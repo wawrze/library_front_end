@@ -37,7 +37,7 @@
                         <hr>
                         <h4 style="text-align:left;float:left;">Wypożyczenie na</h4>
                         <select class="ml-3" onchange="location = this.value;">
-                          <option value="" disabled selected style="display:none;"></option>
+                            <option value="" disabled selected style="display:none;"></option>
                             {% for book in title.books %}
                                 <option value="/rents/new/{{ book.id }}/{{ reader.id }}/summary">{{ book.rentDays }} dni
                                 </option>

@@ -44,17 +44,17 @@
             {% if rentCount == 0 %}
                 <br>
                 <div>
-                <form action="/readers/{{ reader.id }}/delete" method="post">
-                    {% csrf_token %}
-                    <input
-                            class="btn btn-danger"
-                            role="button"
-                            type="submit"
-                            onclick="return confirm('Jesteś pewien?')"
-                            value="Usuń"
-                    >
-                </form>
-                <div>
+                    <form action="/readers/{{ reader.id }}/delete" method="post">
+                        {% csrf_token %}
+                        <input
+                                class="btn btn-danger"
+                                role="button"
+                                type="submit"
+                                onclick="return confirm('Jesteś pewien?')"
+                                value="Usuń"
+                        >
+                    </form>
+                </div>
             {% endif %}
             <hr>
             <h3>Aktualne wypożyczenia</h3>

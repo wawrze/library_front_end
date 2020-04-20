@@ -86,6 +86,7 @@ def user_details(request):
             rent['status'] = rent_to.date() < datetime.now().date()
     except KeyError:
         user = None
+        response_user = None
 
     if request.method == 'POST':
         old_password = request.POST['oldPassword']

@@ -1,4 +1,5 @@
 import datetime
+
 import requests
 from django.http import HttpResponse
 from django.shortcuts import redirect
@@ -76,7 +77,7 @@ def rent_list(request):
             filter_start_date_from = request.POST['startDateFromFilter']
             if filter_start_date_from != '':
                 filtered_rents = list(filter(
-                    lambda r: datetime.strptime(r['rentStartDate'], '%Y-%m-%d') >= datetime.strptime(
+                    lambda r: datetime.datetime.strptime(r['rentStartDate'], '%Y-%m-%d') >= datetime.datetime.strptime(
                         filter_start_date_from, '%Y-%m-%d'), rents))
                 rents = filtered_rents
         except KeyError:
@@ -85,7 +86,7 @@ def rent_list(request):
             filter_start_date_to = request.POST['startDateToFilter']
             if filter_start_date_to != '':
                 filtered_rents = list(filter(
-                    lambda r: datetime.strptime(r['rentStartDate'], '%Y-%m-%d') <= datetime.strptime(
+                    lambda r: datetime.datetime.strptime(r['rentStartDate'], '%Y-%m-%d') <= datetime.datetime.strptime(
                         filter_start_date_to, '%Y-%m-%d'), rents))
                 rents = filtered_rents
         except KeyError:
@@ -94,7 +95,7 @@ def rent_list(request):
             filter_end_date_from = request.POST['endDateFromFilter']
             if filter_end_date_from != '':
                 filtered_rents = list(filter(
-                    lambda r: datetime.strptime(r['rentFinishDate'], '%Y-%m-%d') >= datetime.strptime(
+                    lambda r: datetime.datetime.strptime(r['rentFinishDate'], '%Y-%m-%d') >= datetime.datetime.strptime(
                         filter_end_date_from, '%Y-%m-%d'), rents))
                 rents = filtered_rents
         except KeyError:
@@ -103,7 +104,7 @@ def rent_list(request):
             filter_end_date_to = request.POST['endDateToFilter']
             if filter_end_date_to != '':
                 filtered_rents = list(filter(
-                    lambda r: datetime.strptime(r['rentFinishDate'], '%Y-%m-%d') <= datetime.strptime(
+                    lambda r: datetime.datetime.strptime(r['rentFinishDate'], '%Y-%m-%d') <= datetime.datetime.strptime(
                         filter_end_date_to, '%Y-%m-%d'), rents))
                 rents = filtered_rents
         except KeyError:

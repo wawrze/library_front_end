@@ -2,7 +2,8 @@
 {% block title %}Wypożyczenia{% endblock %}
 
 {% block content %}
-    <!--suppress HtmlFormInputWithoutLabel -->
+    <!--suppress ALL -->
+
     <div class="container">
         <main role="main" class="pb-3">
             <h1>Wypożyczenia</h1>
@@ -11,7 +12,7 @@
                     <p>
                         {% if user is not None and user.userRole != 'USER' %}
                             <a href="/rents/new/titleAndReaderChose"><input class="btn btn-success" type="button"
-                                                        value="Nowe wypożyczenie"/></a>
+                                                                            value="Nowe wypożyczenie"/></a>
                         {% endif %}
                     </p>
                 </div>

@@ -183,7 +183,7 @@ def edit_catalog_position(request, position_id):
             if response.status_code == 200:
                 return redirect('/catalog/' + str(position_id) + '/books')
             else:
-                error = 'Nieznany błąd: ' + response.content
+                error = 'Nieznany błąd: ' + str(response.content)
 
     template = loader.get_template('catalog/edit.html')
     context = {
@@ -226,7 +226,7 @@ def new_book(request, position_id):
             if response.status_code == 200:
                 return redirect('/catalog/' + str(position_id) + '/books')
             else:
-                error = 'Nieznany błąd: ' + response.content
+                error = 'Nieznany błąd: ' + str(response.content)
 
     template = loader.get_template('catalog/newBook.html')
     context = {
@@ -286,7 +286,7 @@ def edit_book(request, position_id, book_id):
             if response.status_code == 200:
                 return redirect('/catalog/' + str(position_id) + '/books')
             else:
-                error = 'Nieznany błąd: ' + response.content
+                error = 'Nieznany błąd: ' + str(response.content)
 
     template = loader.get_template('catalog/editBook.html')
     context = {
