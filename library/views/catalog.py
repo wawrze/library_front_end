@@ -7,7 +7,7 @@ from django.template import loader
 
 
 def index(request):
-    response = requests.get('http://127.0.0.1:8080/title/getTitles', headers={'Authorization': 'Bearer '})
+    response = requests.get('http://127.0.0.1:8080/title/getTitles')
     titles = list(response.json())
 
     try:
@@ -306,7 +306,6 @@ def delete_catalog_position(request, position_id):
         token = user['token']
     except KeyError:
         token = ''
-        user = None
 
     response = requests.delete(
         'http://127.0.0.1:8080/title/deleteTitle?titleId=' + str(position_id),
@@ -325,7 +324,6 @@ def delete_book(request, position_id, book_id):
         token = user['token']
     except KeyError:
         token = ''
-        user = None
 
     response = requests.delete(
         'http://127.0.0.1:8080/books/deleteBook?bookId=' + str(book_id),

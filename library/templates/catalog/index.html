@@ -24,6 +24,7 @@
                 </div>
             </div>
             <form id="filters" method="get">
+                {% csrf_token %}
                 <table id="titles" class="table table-bordered sortable">
                     <thead>
                     <tr>
@@ -43,6 +44,7 @@
                         <td style="background-color: #99bfe6">
                             od: <input type="number" step="1" min="1950" max='2020' id="yearFromFilter" name="year_from"
                                        value="{{ yearFrom }}">
+                            <br>
                             do: <input type="number" step="1" min="1950" max='2020' id="yearToFilter" name="year_to"
                                        value="{{ yearTo }}">
                         </td>

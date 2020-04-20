@@ -1,6 +1,6 @@
 from django.urls import path
 
-from library.views import catalog, user
+from library.views import catalog, user, readers
 
 urlpatterns = [
     path('', catalog.index, name='index'),
@@ -15,4 +15,5 @@ urlpatterns = [
     path('user/login/', user.authorize, name='login'),
     path('user/details/', user.user_details, name='userDetails'),
     path('user/logout/', user.logout, name='logout'),
+    path('readers', readers.reader_list, name='readers')
 ]
