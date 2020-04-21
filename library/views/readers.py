@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.template import loader
 
 from library.pwd_helper import hash_password
+from library.settings import API_URL
 
 
 def reader_list(request):
@@ -16,7 +17,7 @@ def reader_list(request):
         token = ''
         user = None
 
-    response = requests.get('http://127.0.0.1:8080/users/getUsers', headers={'Authorization': token})
+    response = requests.get(API_URL + '/users/getUsers', headers={'Authorization': token})
     readers = list(response.json())
     for reader in readers:
         reader['rentsCount'] = len(reader['rents'])
@@ -90,7 +91,7 @@ def reader_details(request, reader_id):
         token = ''
 
     response = requests.get(
-        'http://127.0.0.1:8080/users/getUser?userId=' + str(reader_id),
+        API_URL + '/users/getUser?userId=' + str(reader_id),
         headers={'Authorization': token}
     )
     reader = response.json()
@@ -144,7 +145,7 @@ def new_reader(request):
                 'userRole': 'USER'
             }
             response = requests.post(
-                'http://127.0.0.1:8080/users/createUser',
+                API_URL + '/users/createUser',
                 headers={'Authorization': token},
                 json=body
             )
@@ -178,7 +179,7 @@ def edit_reader(request, reader_id):
     error = ''
 
     response = requests.get(
-        'http://127.0.0.1:8080/users/getUser?userId=' + str(reader_id),
+        API_URL + '/users/getUser?userId=' + str(reader_id),
         headers={'Authorization': token}
     )
     reader = response.json()
@@ -198,7 +199,7 @@ def edit_reader(request, reader_id):
             body['lastName'] = last_name
             body['password'] = hash_password(password)
             response = requests.post(
-                'http://127.0.0.1:8080/users/updateUser',
+                API_URL + '/users/updateUser',
                 headers={'Authorization': token},
                 json=body
             )
@@ -227,7 +228,7 @@ def delete_reader(request, reader_id):
         token = ''
 
     response = requests.delete(
-        'http://127.0.0.1:8080/users/deleteUser?userId=' + str(reader_id),
+        API_URL + '/users/deleteUser?userId=' + str(reader_id),
         headers={'Authorization': token}
     )
     if response.status_code == 200:

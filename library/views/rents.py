@@ -5,6 +5,8 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 
+from library.settings import API_URL
+
 
 def rent_list(request):
     try:
@@ -14,7 +16,7 @@ def rent_list(request):
         user = None
         token = ''
 
-    response = requests.get('http://127.0.0.1:8080/rents/getRents', headers={'Authorization': token})
+    response = requests.get(API_URL + '/rents/getRents', headers={'Authorization': token})
     rents = response.json()
 
     for rent in rents:
@@ -150,7 +152,7 @@ def new_title_and_reader_chose(request):
         user = None
         token = ''
 
-    response = requests.get('http://127.0.0.1:8080/title/getTitlesWithAvailableBooks')
+    response = requests.get(API_URL + '/title/getTitlesWithAvailableBooks')
     titles = list(response.json())
 
     try:
@@ -183,7 +185,7 @@ def new_title_and_reader_chose(request):
         filtered_titles = list(filter(lambda t: t['publicationYear'] <= int(year_to), titles))
         titles = filtered_titles
 
-    response = requests.get('http://127.0.0.1:8080/users/getUsers', headers={'Authorization': token})
+    response = requests.get(API_URL + '/users/getUsers', headers={'Authorization': token})
     readers = list(response.json())
 
     try:
@@ -233,13 +235,13 @@ def new_book_and_reader_chose(request, title_id):
         user = None
         token = ''
 
-    response = requests.get('http://127.0.0.1:8080/title/getTitle?titleId=' + str(title_id))
+    response = requests.get(API_URL + '/title/getTitle?titleId=' + str(title_id))
     title = response.json()
     books = title['books']
     filtered_books = list(filter(lambda b: b['rentTo'] is None or b['rentTo'] == '', books))
     title['books'] = filtered_books
 
-    response = requests.get('http://127.0.0.1:8080/users/getUsers', headers={'Authorization': token})
+    response = requests.get(API_URL + '/users/getUsers', headers={'Authorization': token})
     readers = list(response.json())
 
     try:
@@ -285,7 +287,7 @@ def new_reader_chose(request, book_id):
         user = None
         token = ''
 
-    response = requests.get('http://127.0.0.1:8080/books/getBook?bookId=' + str(book_id),
+    response = requests.get(API_URL + '/books/getBook?bookId=' + str(book_id),
                             headers={'Authorization': token})
     book = response.json()
     rent_days = book['rentDays']
@@ -293,7 +295,7 @@ def new_reader_chose(request, book_id):
     rent_to = rent_to + datetime.timedelta(days=int(rent_days))
     rent_to = rent_to.strftime("%Y-%m-%d")
 
-    response = requests.get('http://127.0.0.1:8080/users/getUsers', headers={'Authorization': token})
+    response = requests.get(API_URL + '/users/getUsers', headers={'Authorization': token})
     readers = list(response.json())
 
     try:
@@ -340,7 +342,7 @@ def new_title_chose(request, reader_id):
         user = None
         token = ''
 
-    response = requests.get('http://127.0.0.1:8080/title/getTitlesWithAvailableBooks')
+    response = requests.get(API_URL + '/title/getTitlesWithAvailableBooks')
     titles = list(response.json())
 
     try:
@@ -374,7 +376,7 @@ def new_title_chose(request, reader_id):
         titles = filtered_titles
 
     response = requests.get(
-        'http://127.0.0.1:8080/users/getUser?userId=' + str(reader_id),
+        API_URL + '/users/getUser?userId=' + str(reader_id),
         headers={'Authorization': token}
     )
     reader = response.json()
@@ -400,14 +402,14 @@ def new_book_chose(request, title_id, reader_id):
         user = None
         token = ''
 
-    response = requests.get('http://127.0.0.1:8080/title/getTitle?titleId=' + str(title_id))
+    response = requests.get(API_URL + '/title/getTitle?titleId=' + str(title_id))
     title = response.json()
     books = title['books']
     filtered_books = list(filter(lambda b: b['rentTo'] is None or b['rentTo'] == '', books))
     title['books'] = filtered_books
 
     response = requests.get(
-        'http://127.0.0.1:8080/users/getUser?userId=' + str(reader_id),
+        API_URL + '/users/getUser?userId=' + str(reader_id),
         headers={'Authorization': token}
     )
     reader = response.json()
@@ -429,7 +431,7 @@ def new_summary(request, book_id, reader_id):
         user = None
         token = ''
 
-    response = requests.get('http://127.0.0.1:8080/books/getBook?bookId=' + str(book_id),
+    response = requests.get(API_URL + '/books/getBook?bookId=' + str(book_id),
                             headers={'Authorization': token})
     book = response.json()
     rent_days = book['rentDays']
@@ -437,7 +439,7 @@ def new_summary(request, book_id, reader_id):
     rent_to = rent_to + datetime.timedelta(days=int(rent_days))
     rent_to = rent_to.strftime("%Y-%m-%d")
     response = requests.get(
-        'http://127.0.0.1:8080/users/getUser?userId=' + str(reader_id),
+        API_URL + '/users/getUser?userId=' + str(reader_id),
         headers={'Authorization': token}
     )
     reader = response.json()
@@ -460,7 +462,7 @@ def new_confirm(request, book_id, reader_id):
         token = ''
 
     response = requests.post(
-        'http://127.0.0.1:8080/rents/createRent?bookId=' + str(book_id) + '&userId=' + str(reader_id),
+        API_URL + '/rents/createRent?bookId=' + str(book_id) + '&userId=' + str(reader_id),
         headers={'Authorization': token}
     )
     if response.status_code == 200:
@@ -477,7 +479,7 @@ def rent_details(request, rent_id):
         user = None
         token = ''
 
-    response = requests.get('http://127.0.0.1:8080/rents/getRent?rentId=' + str(rent_id),
+    response = requests.get(API_URL + '/rents/getRent?rentId=' + str(rent_id),
                             headers={'Authorization': token})
     rent = response.json()
 
@@ -496,7 +498,7 @@ def book_rent_details(request, book_id):
     except KeyError:
         token = ''
 
-    response = requests.get('http://127.0.0.1:8080/rents/getRentByBookId?bookId=' + str(book_id),
+    response = requests.get(API_URL + '/rents/getRentByBookId?bookId=' + str(book_id),
                             headers={'Authorization': token})
     rent = response.json()
 
@@ -511,7 +513,7 @@ def return_rent(request, rent_id):
         token = ''
 
     response = requests.delete(
-        'http://127.0.0.1:8080/rents/deleteRent?rentId=' + str(rent_id),
+        API_URL + '/rents/deleteRent?rentId=' + str(rent_id),
         headers={'Authorization': token}
     )
     if response.status_code == 200:

@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.template import loader
 
 from library.pwd_helper import hash_password
+from library.settings import API_URL
 
 
 def admin_list(request):
@@ -16,7 +17,7 @@ def admin_list(request):
         token = ''
         user = None
 
-    response = requests.get('http://127.0.0.1:8080/users/getAdmins', headers={'Authorization': token})
+    response = requests.get(API_URL + '/users/getAdmins', headers={'Authorization': token})
     admins = list(response.json())
 
     filter_login = ''
@@ -76,7 +77,7 @@ def admin_details(request, admin_id):
         token = ''
 
     response = requests.get(
-        'http://127.0.0.1:8080/users/getUser?userId=' + str(admin_id),
+        API_URL + '/users/getUser?userId=' + str(admin_id),
         headers={'Authorization': token}
     )
     admin = response.json()
@@ -119,7 +120,7 @@ def new_admin(request):
                 'userRole': 'ADMIN'
             }
             response = requests.post(
-                'http://127.0.0.1:8080/users/createUser',
+                API_URL + '/users/createUser',
                 headers={'Authorization': token},
                 json=body
             )
@@ -153,7 +154,7 @@ def edit_admin(request, admin_id):
     error = ''
 
     response = requests.get(
-        'http://127.0.0.1:8080/users/getUser?userId=' + str(admin_id),
+        API_URL + '/users/getUser?userId=' + str(admin_id),
         headers={'Authorization': token}
     )
     admin = response.json()
@@ -173,7 +174,7 @@ def edit_admin(request, admin_id):
             body['lastName'] = last_name
             body['password'] = hash_password(password)
             response = requests.post(
-                'http://127.0.0.1:8080/users/updateUser',
+                API_URL + '/users/updateUser',
                 headers={'Authorization': token},
                 json=body
             )
@@ -202,7 +203,7 @@ def delete_admin(request, admin_id):
         token = ''
 
     response = requests.delete(
-        'http://127.0.0.1:8080/users/deleteUser?userId=' + str(admin_id),
+        API_URL + '/users/deleteUser?userId=' + str(admin_id),
         headers={'Authorization': token}
     )
     if response.status_code == 200:

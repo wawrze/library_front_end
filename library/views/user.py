@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.template import loader
 
 from library.pwd_helper import hash_password
+from library.settings import API_URL
 
 
 def authorize(request):
@@ -24,7 +25,7 @@ def authorize(request):
             error = 'Musisz podać hasło!'
         else:
             body = {'login': username, 'password': hash_password(password)}
-            response = requests.post('http://127.0.0.1:8080/account/login', json=body)
+            response = requests.post(API_URL + '/account/login', json=body)
             user = response.json()
             try:
                 status = user['status']
@@ -72,7 +73,7 @@ def user_details(request):
     try:
         user = request.session['user']
         response = requests.get(
-            'http://127.0.0.1:8080/users/getUser?userId=' + str(user['id']),
+            API_URL + '/users/getUser?userId=' + str(user['id']),
             headers={'Authorization': user['token']}
         )
         response_user = response.json()
@@ -111,7 +112,7 @@ def user_details(request):
                 'userRole': response_user['userRole']
             }
             response = requests.post(
-                'http://127.0.0.1:8080/users/updateUser',
+                API_URL + '/users/updateUser',
                 headers={'Authorization': response_user['token']},
                 json=body
             )
@@ -142,7 +143,7 @@ def logout(request):
     try:
         user = request.session['user']
         requests.delete(
-            'http://127.0.0.1:8080/account/logout',
+            API_URL + '/account/logout',
             headers={'Authorization': user['token']}
         )
     finally:

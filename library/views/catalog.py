@@ -5,9 +5,11 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.template import loader
 
+from library.settings import API_URL
+
 
 def index(request):
-    response = requests.get('http://127.0.0.1:8080/title/getTitles')
+    response = requests.get(API_URL + '/title/getTitles')
     titles = list(response.json())
 
     try:
@@ -66,7 +68,7 @@ def books(request, position_id):
         user = None
 
     response = requests.get(
-        'http://127.0.0.1:8080/title/getTitle?titleId=' + str(position_id),
+        API_URL + '/title/getTitle?titleId=' + str(position_id),
         headers={'Authorization': token}
     )
     title = response.json()
@@ -128,7 +130,7 @@ def new_catalog_position(request):
         else:
             body = {'author': author, 'title': title, 'publicationYear': publication_year}
             response = requests.post(
-                'http://127.0.0.1:8080/title/createTitle',
+                API_URL + '/title/createTitle',
                 headers={'Authorization': token},
                 json=body
             )
@@ -157,7 +159,7 @@ def edit_catalog_position(request, position_id):
         user = None
 
     response = requests.get(
-        'http://127.0.0.1:8080/title/getTitle?titleId=' + str(position_id),
+        API_URL + '/title/getTitle?titleId=' + str(position_id),
         headers={'Authorization': token}
     )
     position = response.json()
@@ -176,7 +178,7 @@ def edit_catalog_position(request, position_id):
         else:
             body = {'id': position_id, 'author': author, 'title': title, 'publicationYear': publication_year}
             response = requests.post(
-                'http://127.0.0.1:8080/title/updateTitle',
+                API_URL + '/title/updateTitle',
                 headers={'Authorization': token},
                 json=body
             )
@@ -205,7 +207,7 @@ def new_book(request, position_id):
         user = None
 
     response = requests.get(
-        'http://127.0.0.1:8080/title/getTitle?titleId=' + str(position_id),
+        API_URL + '/title/getTitle?titleId=' + str(position_id),
         headers={'Authorization': token}
     )
     title = response.json()
@@ -219,7 +221,7 @@ def new_book(request, position_id):
         else:
             body = {'rentDays': rent_days, 'title': title}
             response = requests.post(
-                'http://127.0.0.1:8080/books/createBook',
+                API_URL + '/books/createBook',
                 headers={'Authorization': token},
                 json=body
             )
@@ -247,7 +249,7 @@ def edit_book(request, position_id, book_id):
         user = None
 
     response = requests.get(
-        'http://127.0.0.1:8080/books/getBook?bookId=' + str(book_id),
+        API_URL + '/books/getBook?bookId=' + str(book_id),
         headers={'Authorization': token}
     )
     book = response.json()
@@ -279,7 +281,7 @@ def edit_book(request, position_id, book_id):
             body = book
             body['rentDays'] = rent_days
             response = requests.post(
-                'http://127.0.0.1:8080/books/updateBook',
+                API_URL + '/books/updateBook',
                 headers={'Authorization': token},
                 json=body
             )
@@ -308,7 +310,7 @@ def delete_catalog_position(request, position_id):
         token = ''
 
     response = requests.delete(
-        'http://127.0.0.1:8080/title/deleteTitle?titleId=' + str(position_id),
+        API_URL + '/title/deleteTitle?titleId=' + str(position_id),
         headers={'Authorization': token}
     )
     if response.status_code == 200:
@@ -326,7 +328,7 @@ def delete_book(request, position_id, book_id):
         token = ''
 
     response = requests.delete(
-        'http://127.0.0.1:8080/books/deleteBook?bookId=' + str(book_id),
+        API_URL + '/books/deleteBook?bookId=' + str(book_id),
         headers={'Authorization': token}
     )
     if response.status_code == 200:
