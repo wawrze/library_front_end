@@ -467,3 +467,55 @@ def new_confirm(request, book_id, reader_id):
         return redirect('rents')
     else:
         return redirect('/rents/new/' + str(book_id) + '/' + str(reader_id) + '/summary')
+
+
+def rent_details(request, rent_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        user = None
+        token = ''
+
+    response = requests.get('http://127.0.0.1:8080/rents/getRent?rentId=' + str(rent_id),
+                            headers={'Authorization': token})
+    rent = response.json()
+
+    template = loader.get_template('rents/details.html')
+    context = {
+        'user': user,
+        'rent': rent
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def book_rent_details(request, book_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+
+    response = requests.get('http://127.0.0.1:8080/rents/getRentByBookId?bookId=' + str(book_id),
+                            headers={'Authorization': token})
+    rent = response.json()
+
+    return redirect('/rents/' + str(rent['id']) + '/details')
+
+
+def return_rent(request, rent_id):
+    try:
+        user = request.session['user']
+        token = user['token']
+    except KeyError:
+        token = ''
+
+    response = requests.delete(
+        'http://127.0.0.1:8080/rents/deleteRent?rentId=' + str(rent_id),
+        headers={'Authorization': token}
+    )
+    if response.status_code == 200:
+        return redirect('/rents')
+    else:
+        print(response.content)
+        return redirect('/rents/' + str(rent_id) + '/details')

@@ -40,6 +40,9 @@
                 <a href="/readers/{{ reader.id }}/edit">
                     <input class="btn btn-info" type="button" value="Edytuj"/>
                 </a>
+                <a href="/rents/new/{{ reader.id }}/titleChose">
+                    <input class="btn btn-warning" type="button" value="Nowe wypożyczenie"/>
+                </a>
             </div>
             {% if rentCount == 0 %}
                 <br>
@@ -70,7 +73,7 @@
                         </thead>
                         <tbody>
                         {% for rent in reader.rents %}
-                            <tr>
+                            <tr onclick="location.href = 'rents/{{ rent.id }}/details'">
                                 <td class="{% if rent.status == 1 %}bg-danger{% endif %}">
                                     {{ rent.book.title.author }} - {{ rent.book.title.title }}
                                     ({{ rent.book.title.publicationYear }})

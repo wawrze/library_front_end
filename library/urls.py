@@ -39,4 +39,7 @@ urlpatterns = [
     path('rents/new/<int:title_id>/<int:reader_id>/bookChose', rents.new_book_chose, name='newRentBookChoose'),
     path('rents/new/<int:book_id>/<int:reader_id>/summary', rents.new_summary, name='newRentSummary'),
     path('rents/new/<int:book_id>/<int:reader_id>/confirm', rents.new_confirm, name='newRentConfirm'),
+    path('rents/<int:rent_id>/details', rents.rent_details, name='rentDetails'),
+    path('rents/book/<int:book_id>/details', rents.book_rent_details, name='rentDetailsByBook'),
+    path('rents/<int:rent_id>/return', rents.return_rent, name='returnRent'),
 ]

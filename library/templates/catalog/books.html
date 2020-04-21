@@ -70,6 +70,9 @@
                 <th class="sorter-text">Status</th>
                 <th class="sorter-text">Termin zwrotu</th>
                 <th class="sorter-number">Do wypożyczania na</th>
+                {% if user is not None and user.userRole != 'USER' %}
+                    <th class="sorter-false"></th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
@@ -90,6 +93,19 @@
                     </td>
                     <td>{{ book.rentTo }}</td>
                     <td>{{ book.rentDays }} dni</td>
+                    {% if user is not None and user.userRole != 'USER' %}
+                        <td>
+                            {% if book.status == 0 %}
+                                <a href="/rents/new/{{ book.id }}/readerChose">
+                                    <input class="btn btn-warning" type="button" value="Wypożycz"/>
+                                </a>
+                            {% else %}
+                                <a href="/rents/book/{{ book.id }}/details">
+                                    <input class="btn btn-warning" type="button" value="Szczegóły wypożyczenia"/>
+                                </a>
+                            {% endif %}
+                        </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
