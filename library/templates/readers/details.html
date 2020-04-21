@@ -73,7 +73,7 @@
                         </thead>
                         <tbody>
                         {% for rent in reader.rents %}
-                            <tr onclick="location.href = 'rents/{{ rent.id }}/details'">
+                            <tr onclick="location.href = '/rents/{{ rent.id }}/details'">
                                 <td class="{% if rent.status == 1 %}bg-danger{% endif %}">
                                     {{ rent.book.title.author }} - {{ rent.book.title.title }}
                                     ({{ rent.book.title.publicationYear }})
